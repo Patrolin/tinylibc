@@ -31,8 +31,10 @@
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
-//#define external extern // link to other translation units (default)
-#define internal static // don't link to other translation units
+//#define extern "C++" // link with other translation units (default)
+#define external extern "C" // link with other translation units without name mangling
+#define internal static // don't link with other translation units
+
 #define global static // global variable
 
 #define ArrayCount(Array) (sizeof(Array) / sizeof((Array)[0]))

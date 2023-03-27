@@ -57,7 +57,7 @@
     // TODO: exceptions: ??
 
     int main(int argc, char* argv[]);
-    extern "C" void _start() {
+    external void _start() {
         //crtInit();
         int retCode = main(0, 0);
         //_DoExit();

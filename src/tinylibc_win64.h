@@ -38,7 +38,7 @@
     // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)
 
     int WinMain(HINSTANCE app, HINSTANCE prev_app, LPSTR command, int window_options);
-    int _start() {
+    external int _start() {
         //crtInit();
         _win_init.init();
         int retCode = WinMain(0, 0, 0, 0);
