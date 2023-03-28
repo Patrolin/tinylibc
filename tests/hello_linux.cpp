@@ -7,7 +7,6 @@
 // clang tests/hello_linux.cpp -o out/hello_linux -nostdlib -fuse-ld=gold
 #include "../src/tinylibc_linux.h"
 
-#include <pthread.h>
 
 /*extern int pthread_create (
     pthread_t *__restrict __newthread,
@@ -16,8 +15,9 @@
     void *__restrict __arg) __THROWNL __nonnull ((1, 3)
 );*/
 
-//#define THREADS 1
-#if THREADS
+//#define PTHREAD 1
+#if PTHREAD
+    //#include <pthread.h>
     void* threadCallback(void* arg) {
         print("Hello from thread!");
         return 0;
@@ -26,8 +26,8 @@
 
 int main(int argc, char* argv[]) {
     print("Hello world\n");
-    //print(tprint(123));
-    #if THREADS
+    print(tprint(123));
+    #if PTHREAD
         pthread_t threadId;
         pthread_create(&threadId, 0, threadCallback, 0);
         for(;;);

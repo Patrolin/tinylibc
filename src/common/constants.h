@@ -2,7 +2,7 @@
 // but C++ is stupid and doesn't allow sizeof(), constexpr or defined() in #define
 
 // bits
-#if (defined(_WIN64) || defined(__x86_64__))
+#if defined(_WIN64) || defined(__x86_64__)
     #define BITS_64 1
 #elif defined(__i386__)
     #define BITS_32 1
@@ -18,11 +18,11 @@
 #endif
 
 // os
-#if (defined(_WIN32) || defined(_WIN64))
+#if defined(_WIN32) || defined(_WIN64)
     #define OS_WIN 1
 #elif defined(__linux__) || defined(__gnu_linux__)
     #define OS_LINUX 1
-#elif (defined(__APPLE__) || defined(__MACH__))
+#elif defined(__APPLE__) || defined(__MACH__)
     #define OS_APPLE 1
 #else
     static_assert(false, "Unknown OS_xx")
@@ -41,5 +41,7 @@
 #define kiloBytes(n) ((uint)n*1024)
 #define megaBytes(n) (kiloBytes(n)*1024)
 #define gigaBytes(n) (megaBytes(n)*1024)
+
+#define PAGE_SIZE kiloBytes(4)
 
 #define U64_MAX_BASE10_DIGITS 20

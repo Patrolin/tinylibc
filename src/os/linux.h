@@ -38,6 +38,8 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
 #define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b))
 #define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
+#define _SYSCALL5_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8))
+#define _SYSCALL6_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8), "r"(r9))
 #define _SYSCALL_R10(type, value) register type r10 asm ("r10") = value
 #define _SYSCALL_R8(type, value) register type r8 asm ("r8") = value
 #define _SYSCALL_R9(type, value) register type r9 asm ("r9") = value
@@ -56,7 +58,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         _SYSCALL_R10(int, flags);
         _SYSCALL_R8(int, fd);
         _SYSCALL_R9(sint, offset);
-        _SYSCALL3_OUT(_LINUX_MMAP, address, length, protection, ptr);
+        _SYSCALL6_OUT(_LINUX_MMAP, address, length, protection, ptr);
         return ptr;
     }
     inline int linuxMunmap(void* address, uint length) {
@@ -68,7 +70,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         long isParent;
         _SYSCALL_R10(int*, child_tid);
         _SYSCALL_R8(unsigned long, tls);
-        _SYSCALL3_OUT(_LINUX_CLONE, flags, stack, parent_tid, isParent);
+        _SYSCALL5_OUT(_LINUX_CLONE, flags, stack, parent_tid, isParent);
         return isParent;
     }
 #else

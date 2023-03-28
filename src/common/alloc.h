@@ -10,10 +10,10 @@ global TAlloc _talloc = {};
 void* talloc(uint size) {
     uint new_data_size = _talloc.data_size + size;
     if (new_data_size > _talloc.size) {
-        uint new_size = _talloc.size + kiloBytes(1);
+        uint new_size = _talloc.size + PAGE_SIZE;
         _talloc.start = (u8*)osAlloc(_talloc.start, new_size);
         if (_talloc.start == 0) {
-            print("AllocError");
+            print("AllocError\n");
             osCrash(1);
         }
         _talloc.size = new_size;
