@@ -38,11 +38,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
 #define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b))
 #define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
-#define _SYSCALL5_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8) : "rcx", "r11")
-#define _SYSCALL6_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8), "r"(r9))
-#define _SYSCALL_R10(type, value) register type r10 asm ("r10") = value
-#define _SYSCALL_R8(type, value) register type r8 asm ("r8") = value
-#define _SYSCALL_R9(type, value) register type r9 asm ("r9") = value
+// (gcc register syntax does not work at all)
 
 #if ARCH_X64
     inline void linuxExit(uint return_code) {
