@@ -2,7 +2,6 @@
 #include "../src/tinylibc_win64.h"
 
 int WinMain(HINSTANCE app, HINSTANCE prev_app, LPSTR command, int window_options) {
-    print("Hello world\n\0");
+    print("Hello world\n");
     print(tprint(123));
-    return 0;
 }
