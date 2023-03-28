@@ -1,7 +1,7 @@
 // less /usr/include/x86_64-linux-gnu/asm/unistd_64.h
 #define _LINUX_WRITE 1
 
-#define _LINUX_MMAP 9 // TODO
+#define _LINUX_MMAP 9
 #define _LINUX_MPROTECT 10
 #define _LINUX_MUNMAP 11
 #define _LINUX_BRK 12
@@ -53,7 +53,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);
         return bytes_written;
     }
-    inline void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset) {
+    void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset) {
         // TODO: memory clobber? (fence)
         void* ptr;
         debugPrint((uint)address);
