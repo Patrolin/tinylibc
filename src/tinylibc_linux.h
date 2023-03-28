@@ -13,7 +13,8 @@ inline void osPrint(const u8* msg, uint count) {
     linuxWrite(_STDOUT, msg, count);
 }
 inline void* osAlloc(void* prev_ptr, uint size) {
-    return linuxMmap(prev_ptr, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+    // TODO
+    return linuxMmap((void*)PAGE_SIZE, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
 }
 // TODO: exceptions: ??
 

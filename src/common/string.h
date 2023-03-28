@@ -1,3 +1,5 @@
+void* talloc(uint size);
+
 uint cstrCount(const u8* start) {
     const u8* end = start;
     while (*end != 0) { end++; };
