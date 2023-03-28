@@ -54,6 +54,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         return bytes_written;
     }
     inline void* linuxMmap(void* address, uint length, int protection, int flags, int fd, sint offset) {
+        // TODO: memory clobber? (fence)
         void* ptr;
         _SYSCALL_R10(int, flags);
         _SYSCALL_R8(int, fd);
