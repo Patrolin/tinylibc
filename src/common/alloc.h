@@ -14,8 +14,6 @@ void* talloc(uint size) {
             print("AllocError\n");
             osCrash(1);
         }
-        print("_talloc_start=");
-        debugPrint((uint)_talloc.start);
         _talloc.size = new_size;
     }
     void* data = _talloc.start + _talloc.data_size;
