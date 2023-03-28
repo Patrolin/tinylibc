@@ -22,7 +22,7 @@ sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
 #define _STDERR 2
-void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset);
+external void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset);
 #define PROT_READ 0x1
 #define PROT_WRITE 0x2
 #define PROT_EXECUTE 0x4
@@ -38,7 +38,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
 #define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b))
 #define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
-#define _SYSCALL5_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8))
+#define _SYSCALL5_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8) : "rcx", "r11")
 #define _SYSCALL6_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c), "r"(r10), "r"(r8), "r"(r9))
 #define _SYSCALL_R10(type, value) register type r10 asm ("r10") = value
 #define _SYSCALL_R8(type, value) register type r8 asm ("r8") = value
@@ -52,29 +52,6 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         sint bytes_written;
         _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);
         return bytes_written;
-    }
-    void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset) {
-        // TODO: memory clobber? (fence)
-        void* ptr;
-        debugPrint((uint)address);
-        debugPrint((uint)size);
-        debugPrint((uint)protection);
-        debugPrint((uint)flags);
-        debugPrint((uint)fd);
-        debugPrint((uint)offset);
-        register int r10 asm ("r10") = flags;
-        register int r8 asm ("r8") = fd;
-        register sint r9 asm ("r9") = offset;
-        asm volatile (
-            "syscall"
-            : "=rax"(ptr)
-            : "rax"(_LINUX_MMAP), "rdi"(address), "rsi"(size), "rdx"(protection), "r"(flags), "r"(fd), "r"(offset)
-            : "memory", "rcx", "r11");
-        /*_SYSCALL_R10(int, flags);
-        _SYSCALL_R8(int, fd);
-        _SYSCALL_R9(sint, offset);
-        _SYSCALL6_OUT(_LINUX_MMAP, address, size, protection, ptr);*/
-        return ptr;
     }
     inline int linuxMunmap(void* address, uint length) {
         int error_code;

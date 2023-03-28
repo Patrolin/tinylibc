@@ -7,7 +7,6 @@
 // clang tests/hello_linux.cpp -o out/hello_linux -nostdlib -fuse-ld=gold
 #include "../src/tinylibc_linux.h"
 
-
 /*extern int pthread_create (
     pthread_t *__restrict __newthread,
     const pthread_attr_t *__restrict __attr,
@@ -32,4 +31,5 @@ int main(int argc, char* argv[]) {
         pthread_create(&threadId, 0, threadCallback, 0);
         for(;;);
     #endif
+    return 0;
 }
