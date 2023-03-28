@@ -12,7 +12,7 @@
 
 // arch
 #if defined(__x86_64__)
-    #define ARCH_X86_64 1
+    #define ARCH_X64 1
 #else
     static_assert(false, "Unknown ARCH_xx")
 #endif
