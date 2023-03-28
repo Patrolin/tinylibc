@@ -22,7 +22,7 @@ sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
 #define _STDERR 2
-void* linuxMmap(void* address, uint length, int protection, int flags, int fd, sint offset);
+void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset);
 #define PROT_READ 0x1
 #define PROT_WRITE 0x2
 #define PROT_EXECUTE 0x4
@@ -53,13 +53,27 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
         _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);
         return bytes_written;
     }
-    inline void* linuxMmap(void* address, uint length, int protection, int flags, int fd, sint offset) {
+    inline void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset) {
         // TODO: memory clobber? (fence)
         void* ptr;
-        _SYSCALL_R10(int, flags);
+        debugPrint((uint)address);
+        debugPrint((uint)size);
+        debugPrint((uint)protection);
+        debugPrint((uint)flags);
+        debugPrint((uint)fd);
+        debugPrint((uint)offset);
+        register int r10 asm ("r10") = flags;
+        register int r8 asm ("r8") = fd;
+        register sint r9 asm ("r9") = offset;
+        asm volatile (
+            "syscall"
+            : "=rax"(ptr)
+            : "rax"(_LINUX_MMAP), "rdi"(address), "rsi"(size), "rdx"(protection), "r"(flags), "r"(fd), "r"(offset)
+            : "memory", "rcx", "r11");
+        /*_SYSCALL_R10(int, flags);
         _SYSCALL_R8(int, fd);
         _SYSCALL_R9(sint, offset);
-        _SYSCALL6_OUT(_LINUX_MMAP, address, length, protection, ptr);
+        _SYSCALL6_OUT(_LINUX_MMAP, address, size, protection, ptr);*/
         return ptr;
     }
     inline int linuxMunmap(void* address, uint length) {
