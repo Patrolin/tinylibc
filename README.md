@@ -1,3 +1,12 @@
+## tinylibc
+
+```
+$ ls -la out
+-rwxrwxrwx 1 lin lin 123904 Mar 28 13:09 hello_libc.exe
+-rwxrwxrwx 1 lin lin   3576 Mar 27 21:18 hello_linux
+-rwxrwxrwx 1 lin lin   4096 Mar 27 21:18 hello_win64.exe
+```
+
 ## dev
 Vscode settings:
 ```json
