@@ -25,20 +25,15 @@
     #define _LINUX_STDERR 2
 
     // syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
+    #define SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
+    #define SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
+
     inline void asmExit(uint return_code) {
-        asm volatile (
-            "movq $" STRINGIFY(_LINUX_EXIT) ", %%rax\n\t"
-            "movq $0, %%rdi\n\t"
-            "syscall"
-            ::: "rdi", "rax");
+        SYSCALL1(_LINUX_EXIT, 0);
     }
     inline uint asmPrint(uint file, const u8* msg, uint count) {
         uint written;
-        asm volatile(
-            "movq $" STRINGIFY(_LINUX_WRITE) ", %%rax\n\t"
-            "syscall"
-            : "=rax"(written)
-            : "rdi"(file), "rsi"(msg), "rdx"(1));
+        SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, written);
         return written;
     }
     inline void asmAlloc() {

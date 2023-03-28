@@ -1,9 +1,9 @@
 // clang
 #include "common.h"
 //#include "common/crt.h"
-#include <windows.h>
 
 #if OS_WIN && BITS_64
+    #include <windows.h>
     #pragma comment(linker, "/defaultlib:user32.lib")
     #pragma comment(linker, "/defaultlib:kernel32.lib")
     #pragma comment(linker, "/subsystem:windows")
