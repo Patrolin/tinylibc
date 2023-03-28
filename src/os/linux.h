@@ -56,9 +56,7 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
     }
     inline long linuxClone(unsigned long flags, void *stack, int *parent_tid, int *child_tid, unsigned long tls) {
         long isParent;
-        _SYSCALL_R10(int*, child_tid);
-        _SYSCALL_R8(unsigned long, tls);
-        _SYSCALL5_OUT(_LINUX_CLONE, flags, stack, parent_tid, isParent);
+        // TODO
         return isParent;
     }
 #else
