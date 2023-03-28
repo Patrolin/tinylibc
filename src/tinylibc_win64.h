@@ -1,4 +1,3 @@
-// clang
 #include "common.h"
 //#include "common/crt.h"
 

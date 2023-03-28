@@ -1,4 +1,3 @@
-// clang
 #include "common.h"
 
 static_assert(OS_LINUX, "Must compile on Linux!");
