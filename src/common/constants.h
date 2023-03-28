@@ -1,5 +1,5 @@
 // we want: #define BITS_64 (sizeof(void*) == 8)
-// but C++ is stupid and doesn't allow sizeof(), constexpr or defined() in preprocessor
+// but C++ is stupid and doesn't allow sizeof(), constexpr or defined() in #define
 
 // bits
 #if (defined(_WIN64) || defined(__x86_64__))
