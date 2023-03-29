@@ -32,6 +32,7 @@
 #define CACHE_LINE_SIZE 64
 #define PAGE_SIZE kiloBytes(4)
 
+// pointer to int
 #if defined(BITS_64)
     typedef s64 sint;
     typedef u64 uint;

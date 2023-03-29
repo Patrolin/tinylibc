@@ -25,7 +25,10 @@
 
 int main(int argc, char* argv[]) {
     print("Hello world\n");
-    print(123);
+    //print(123);
+    for (u64 i = 0; i < 20; i++) {
+        print(trailingZeros(i));
+    }
     #if PTHREAD
         pthread_t threadId;
         pthread_create(&threadId, 0, threadCallback, 0);

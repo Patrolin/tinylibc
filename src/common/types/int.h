@@ -20,6 +20,7 @@ static_assert(sizeof(u64) == 8, "");
 static_assert(sizeof(s64) == 8, "");
 
 typedef u32 bool32;
+typedef u64 bool64;
 
 // constants
 #define _U_MIN(type) ((type)(0))
@@ -46,5 +47,3 @@ typedef u32 bool32;
 #define U16_MAX_BASE10_DIGITS 5
 #define U32_MAX_BASE10_DIGITS 10
 #define U64_MAX_BASE10_DIGITS 20
-
-// TODO: bit twiddling
