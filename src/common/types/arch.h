@@ -19,22 +19,25 @@
 #if defined(__x86_64__)
     #define ARCH_X64 1
     #define BITS_64 1
+    #define ENDIAN_LSB_FIRST 1
     #define HUGE_PAGE_SIZE_MIN megaBytes(2)
     #define HUGE_PAGE_SIZE_MAX gigaBytes(1)
 #elif defined(__i386__)
     #define ARCH_X86 1
     #define BITS_32 1
+    #define ENDIAN_LSB_FIRST 1
 #else
     static_assert(false, "Unknown architecture")
 #endif
 #define CACHE_LINE_SIZE 64
 #define PAGE_SIZE kiloBytes(4)
 
-#if BITS_64
+#if defined(BITS_64)
     typedef s64 sint;
     typedef u64 uint;
-#else
+#elif defined(BITS_32)
     typedef s32 sint;
     typedef u32 uint;
+#else
+    static_assert(false, "Unknown bits");
 #endif
-typedef u32 bool32;
