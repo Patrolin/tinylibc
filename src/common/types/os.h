@@ -14,3 +14,13 @@ internal void osPanic(const char* msg);
 internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
 //void osCreateThread(callback f);
 //void osCreateSemaphore(?);
+
+internal void assert(bool32 condition, const char* msg) {
+    #ifndef RELEASE
+        if (!condition) osPanic(msg);
+    #endif
+}
+internal void _pageAllocAssert(void* prev_ptr, uint size, void* ptr) {
+    assert((ptr != 0), "AllocError: ptr = 0\n");
+    assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
+}

@@ -1,10 +1,3 @@
-// assert
-internal void assert(bool32 condition, const char* msg) {
-    #ifndef RELEASE
-        if (!condition) osPanic(msg);
-    #endif
-}
-
 // String
 struct String {
     u8* msg;

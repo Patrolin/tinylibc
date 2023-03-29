@@ -1,3 +1,7 @@
+internal uint ceil(uint a, uint b) {
+    return (a + b) - (a % b);
+}
+
 // bit twiddling: http://graphics.stanford.edu/~seander/bithacks.html
 #define _BIT_TWIDDLE_MASK1 0x5555555555555555
 #define _BIT_TWIDDLE_MASK2 0x3333333333333333
