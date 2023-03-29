@@ -1,10 +1,10 @@
-// TODO: -nostdlib
 #pragma comment(linker, "/nodefaultlib:libcmt.lib")
 #pragma comment(linker, "/nodefaultlib:msvcmrt.lib")
 #pragma comment(linker, "/nodefaultlib:msvcrt.lib")
 
 // Compiler Run Time
-#include "int.h"
+#include "types/int.h"
+#include "types/arch.h"
 
 void* talloc(uint);
 

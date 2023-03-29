@@ -1,4 +1,3 @@
-// exact
 typedef unsigned char u8;
 typedef signed char s8;
 static_assert(sizeof(u8) == 1, "");
@@ -19,13 +18,6 @@ typedef signed long long s64;
 static_assert(sizeof(u64) == 8, "");
 static_assert(sizeof(s64) == 8, "");
 
-// lax
-#if BITS_64
-    typedef s64 sint;
-    typedef u64 uint;
-#else
-    typedef s32 sint;
-    typedef u32 uint;
-#endif
+#define U64_MAX_BASE10_DIGITS 20
 
-typedef u32 bool32;
+// TODO: bit twiddling

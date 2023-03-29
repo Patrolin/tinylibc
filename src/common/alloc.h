@@ -1,4 +1,9 @@
-// TODO: per thread TAlloc
+// TODO: per thread allocators
+#ifndef CUSTOM_ALLOCATOR
+    struct Alloc {};
+
+#endif
+
 struct TAlloc {
     u8* start = 0;
     uint size = 0;

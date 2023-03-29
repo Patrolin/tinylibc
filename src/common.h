@@ -1,7 +1,7 @@
-#include "common/constants.h"
-#include "common/int.h"
-#include "common/os.h"
+#include "common/types/int.h"
+#include "common/types/float.h"
+#include "common/types/arch.h"
+#include "common/types/os.h"
 
-#include "common/assert.h"
 #include "common/string.h"
 #include "common/alloc.h"

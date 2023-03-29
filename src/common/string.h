@@ -1,5 +1,11 @@
 void* talloc(uint size);
 
+inline void assert(bool32 condition, const char* msg) {
+    #ifdef DEBUG
+        if (!condition) osPanic(msg);
+    #endif
+}
+
 uint cstrCount(const u8* start) {
     const u8* end = start;
     while (*end != 0) { end++; };
