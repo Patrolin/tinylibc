@@ -33,7 +33,7 @@ inline void osPanic(const char* msg) {
     MessageBoxA(0, msg, "Panic", MB_OK|MB_ICONERROR);
     osExit(1);
 };
-inline void* osAlloc(void* prev_ptr, uint size) {
+inline void* osPageAlloc(void* prev_ptr, uint size) {
     return VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 }
 // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)

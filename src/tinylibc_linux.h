@@ -13,7 +13,7 @@ inline void osPanic(const char* msg) {
     print(msg);
     osExit(1);
 }
-inline void* osAlloc(void* prev_ptr, uint size) {
+inline void* osPageAlloc(void* prev_ptr, uint size) {
     return linuxMmap(prev_ptr, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
 }
 // TODO: exceptions: ??

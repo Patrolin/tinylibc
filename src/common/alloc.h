@@ -9,7 +9,7 @@ void* talloc(uint size) {
     uint new_data_size = _talloc.data_size + size;
     if (new_data_size > _talloc.size) {
         uint new_size = _talloc.size + PAGE_SIZE;
-        _talloc.start = (u8*)osAlloc(_talloc.start, new_size);
+        _talloc.start = (u8*)osPageAlloc(_talloc.start, new_size);
         assert(_talloc.start != 0, "AllocError\n");
         _talloc.size = new_size;
     }
