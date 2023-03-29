@@ -9,19 +9,19 @@
 #define _SWAP_BITS(shift, mask) \
     value = ((value >> shift) & mask) | ((value & mask) << shift)
 
-u8 reverse(u8 value) {
+u8 reverseBits(u8 value) {
     // TODO: check perf
     return (value * 0x0202020202ULL & 0x010884422010ULL) % 1023;
     //return ((value * 0x80200802ULL) & 0x0884422110ULL) * 0x0101010101ULL >> 32;
 }
-u16 reverse(u16 value) {
+u16 reverseBits(u16 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
     value = (value >> 8) | (value << 8);
     return value;
 }
-u32 reverse(u32 value) {
+u32 reverseBits(u32 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
@@ -29,7 +29,7 @@ u32 reverse(u32 value) {
     value = (value >> 16) | (value << 16);
     return value;
 }
-u64 reverse(u64 value) {
+u64 reverseBits(u64 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
