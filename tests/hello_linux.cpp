@@ -25,7 +25,7 @@
 
 int main(int argc, char* argv[]) {
     print("Hello world\n");
-    print(tprint(123));
+    print(123);
     #if PTHREAD
         pthread_t threadId;
         pthread_create(&threadId, 0, threadCallback, 0);
