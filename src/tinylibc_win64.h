@@ -14,7 +14,7 @@ struct WinInit {
     HANDLE stdout = 0;
     HANDLE stderr = 0;
     void init() {
-        AllocConsole();
+        AllocConsole(); // TODO: split into win64_console?
         this->stdin = GetStdHandle(-10);
         this->stdout = GetStdHandle(-11);
         this->stderr = GetStdHandle(-12);
