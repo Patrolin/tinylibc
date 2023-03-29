@@ -34,7 +34,9 @@ internal void osPanic(const char* msg) {
     osExit(1);
 };
 internal void* osPageAlloc(void* prev_ptr, uint size) {
-    return VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+    void* ptr = VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+    assert((prev_ptr == 0) || (ptr == prev_ptr), "osPageAlloc moved prev_ptr");
+    return ptr;
 }
 // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)
 

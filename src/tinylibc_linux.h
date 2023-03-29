@@ -15,7 +15,9 @@ internal void osPanic(const char* msg) {
     osExit(1);
 }
 internal void* osPageAlloc(void* prev_ptr, uint size) {
-    return linuxMmap(prev_ptr, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+    void* ptr = linuxMmap(prev_ptr, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+    assert((prev_ptr == 0) || (ptr == prev_ptr), "osPageAlloc moved prev_ptr");
+    return ptr;
 }
 // TODO: exceptions: ??
 
