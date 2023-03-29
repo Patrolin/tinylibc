@@ -27,8 +27,8 @@ inline void print(const char* cstr) {
 }
 
 String printInto(u8* start, uint number) {
-    u8* curr = start + U64_MAX_BASE10_DIGITS+1;
-    *--curr = '\0';
+    u8* curr = start + U64_MAX_BASE10_DIGITS;
+    *curr = '\0';
     do {
         *--curr = '0' + (number % 10);
         number /= 10;
