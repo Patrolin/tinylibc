@@ -1,5 +1,5 @@
 internal uint ceil(uint a, uint b) {
-    return (a + b) - (a % b);
+    return (a + b) - (a % b) - 1;
 }
 
 // bit twiddling: http://graphics.stanford.edu/~seander/bithacks.html
