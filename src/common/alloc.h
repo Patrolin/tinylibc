@@ -1,7 +1,7 @@
 // TODO: per thread allocators
 #ifndef CUSTOM_ALLOCATOR
     struct Alloc {};
-
+    // TODO: FreeListAlloc
 #endif
 
 struct TAlloc {
@@ -10,7 +10,7 @@ struct TAlloc {
     uint data_size = 0;
 };
 global TAlloc _talloc = {};
-void* talloc(uint size) {
+internal void* talloc(uint size) {
     uint new_data_size = _talloc.data_size + size;
     if (new_data_size > _talloc.size) {
         uint new_size = _talloc.size + PAGE_SIZE;

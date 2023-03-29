@@ -9,19 +9,19 @@
 #define _SWAP_BITS(shift, mask) \
     value = ((value >> shift) & mask) | ((value & mask) << shift)
 
-u8 reverseBits(u8 value) {
+internal u8 reverseBits(u8 value) {
     // TODO: check perf
     return (value * 0x0202020202ULL & 0x010884422010ULL) % 1023;
     //return ((value * 0x80200802ULL) & 0x0884422110ULL) * 0x0101010101ULL >> 32;
 }
-u16 reverseBits(u16 value) {
+internal u16 reverseBits(u16 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
     value = (value >> 8) | (value << 8);
     return value;
 }
-u32 reverseBits(u32 value) {
+internal u32 reverseBits(u32 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
@@ -29,7 +29,7 @@ u32 reverseBits(u32 value) {
     value = (value >> 16) | (value << 16);
     return value;
 }
-u64 reverseBits(u64 value) {
+internal u64 reverseBits(u64 value) {
     _SWAP_BITS(1, _BIT_TWIDDLE_MASK1);
     _SWAP_BITS(2, _BIT_TWIDDLE_MASK2);
     _SWAP_BITS(4, _BIT_TWIDDLE_MASK3);
@@ -42,14 +42,14 @@ u64 reverseBits(u64 value) {
 #define _LOG2(mask, shift_count) \
     shift = (value > mask) << shift_count; result |= shift; value >>= shift
 
-u8 log2(u8 value) {
+internal u8 log2(u8 value) {
     u8 shift, result = 0;
     _LOG2(0xF, 2);
     _LOG2(0x3, 1);
     result |= (value >> 1);
     return result;
 }
-u16 log2(u16 value) {
+internal u16 log2(u16 value) {
     u16 shift, result = 0;
     _LOG2(0xFF, 3);
     _LOG2(0xF, 2);
@@ -57,7 +57,7 @@ u16 log2(u16 value) {
     result |= (value >> 1);
     return result;
 }
-u32 log2(u32 value) {
+internal u32 log2(u32 value) {
     u32 shift, result = 0;
     _LOG2(0xFFFF, 4);
     _LOG2(0xFF, 3);
@@ -66,7 +66,7 @@ u32 log2(u32 value) {
     result |= (value >> 1);
     return result;
 }
-u64 log2(u64 value) {
+internal u64 log2(u64 value) {
     u64 shift, result = 0;
     _LOG2(0xFFFFFFFF, 5);
     _LOG2(0xFFFF, 4);
@@ -80,7 +80,7 @@ u64 log2(u64 value) {
 #define _trailingZeros(mask, shift_count) \
     result -= ((value & mask) != 0) * shift_count
 
-u8 trailingZeros(u8 value) {
+internal u8 trailingZeros(u8 value) {
     value &= (u8)(-value);
     u8 result = 8 - (value != 0);
     _trailingZeros(_BIT_TWIDDLE_MASK3, 4);
@@ -88,7 +88,7 @@ u8 trailingZeros(u8 value) {
     _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
     return result;
 }
-u16 trailingZeros(u16 value) {
+internal u16 trailingZeros(u16 value) {
     value &= (u16)(-value);
     u16 result = 16 - (value != 0);
     _trailingZeros(_BIT_TWIDDLE_MASK4, 8);
@@ -97,7 +97,7 @@ u16 trailingZeros(u16 value) {
     _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
     return result;
 }
-u32 trailingZeros(u32 value) {
+internal u32 trailingZeros(u32 value) {
     value &= (u32)(-value);
     u32 result = 32 - (value != 0);
     _trailingZeros(_BIT_TWIDDLE_MASK5, 16);
@@ -107,7 +107,7 @@ u32 trailingZeros(u32 value) {
     _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
     return result;
 }
-u64 trailingZeros(u64 value) {
+internal u64 trailingZeros(u64 value) {
     value &= (u64)(-value);
     u64 result = 64 - (value != 0);
     _trailingZeros(_BIT_TWIDDLE_MASK6, 32);

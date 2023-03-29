@@ -17,8 +17,8 @@
 #define _LINUX_GETCPU 309 // TODO
 
 // man 2 <syscall>
-void linuxExit(int return_code);
-sint linuxWrite(int file, const u8* msg, uint count);
+internal void linuxExit(int return_code);
+internal sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
 #define _STDERR 2
@@ -31,8 +31,8 @@ external void* linuxMmap(void* address, uint size, int protection, int flags, in
 #define MAP_SHARED_VALIDATE 0x03
 #define MAP_ANONYMOUS 0x20
 #define MAP_STACK 0x20000
-int linuxMunmap(void* address, uint length);
-long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
+internal int linuxMunmap(void* address, uint length);
+internal long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
 
 // syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
@@ -41,20 +41,20 @@ long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_ti
 // (gcc register syntax does not work at all)
 
 #if ARCH_X64
-    inline void linuxExit(uint return_code) {
+    internal void linuxExit(uint return_code) {
         _SYSCALL1(_LINUX_EXIT, 0);
     }
-    inline sint linuxWrite(int file, const u8* msg, uint count) {
+    internal sint linuxWrite(int file, const u8* msg, uint count) {
         sint bytes_written;
         _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);
         return bytes_written;
     }
-    inline int linuxMunmap(void* address, uint length) {
+    internal int linuxMunmap(void* address, uint length) {
         int error_code;
         _SYSCALL2_OUT(_LINUX_MUNMAP, address, length, error_code);
         return error_code;
     }
-    inline long linuxClone(unsigned long flags, void *stack, int *parent_tid, int *child_tid, unsigned long tls) {
+    internal long linuxClone(unsigned long flags, void *stack, int *parent_tid, int *child_tid, unsigned long tls) {
         long isParent;
         // TODO
         return isParent;

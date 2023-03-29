@@ -22,18 +22,18 @@ struct WinInit {
 };
 global WinInit _win_init = {};
 
-inline void osExit(uint return_code) {
+internal void osExit(uint return_code) {
     ExitProcess(return_code);
 }
-inline void osPrint(const u8* msg, uint count) {
+internal void osPrint(const u8* msg, uint count) {
     WriteFile(_win_init.stdout, msg, count, 0, 0);
     MessageBoxA(0, (char*)msg, "Message", MB_OK);
 }
-inline void osPanic(const char* msg) {
+internal void osPanic(const char* msg) {
     MessageBoxA(0, msg, "Panic", MB_OK|MB_ICONERROR);
     osExit(1);
 };
-inline void* osPageAlloc(void* prev_ptr, uint size) {
+internal void* osPageAlloc(void* prev_ptr, uint size) {
     return VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 }
 // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)

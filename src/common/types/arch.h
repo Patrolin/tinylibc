@@ -3,7 +3,7 @@
 
 //#define externalCpp extern "C++" // link with other translation units with (C++) name mangling (default)
 #define external extern "C" // link with other translation units without (C++) name mangling
-#define internal static // don't link with other translation units
+#define internal static // don't link with other translation units (allows compiler to discard unused functions)
 #define global static // global variable
 
 #define arrayCount(Array) (sizeof(Array) / sizeof((Array)[0]))
