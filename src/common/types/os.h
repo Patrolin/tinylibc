@@ -8,11 +8,12 @@
     static_assert(false, "Unknown operating system")
 #endif
 
+// print
 internal void osExit(uint return_code);
 internal void osPrint(const u8* msg, uint count);
 
+// assert
 internal void osPanic(const char* msg);
-internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
 #ifdef BUILD_RELEASE
     #define assert(condition, msg)
 #else
@@ -22,10 +23,15 @@ internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_S
     assert((ptr != 0), "AllocError: ptr = 0\n"); /* TODO: os does not support realloc */ \
     assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
 
+// alloc
+internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
+
+// time
 internal void osSleep(uint ms);
 internal void osNanosleep(uint ms);
 internal u64 osNanoTime();
 // TODO: internal u64 osDateTime();
 
+// threads
 // TODO: internal void osCreateThread(callback f);
 // TODO: internal void osCreateSemaphore(?);
