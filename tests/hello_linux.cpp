@@ -3,7 +3,6 @@
 // bfd works but is big (10 KB)
 // lld links and is small (4 KB) but program throws a Segmentation fault
 // gold works and is small (4 KB)
-
 // clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -Winline && out/hello_linux
 #include "../src/tinylibc_linux.h"
 

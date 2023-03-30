@@ -26,7 +26,8 @@ internal void osExit(uint return_code) {
     ExitProcess(return_code);
 }
 internal void osPrint(const u8* msg, uint count) {
-    WriteFile(_win_init.stdout, msg, count, 0, 0);
+    WriteConsole(_win_init.stdout, msg, count, 0, 0);
+    //WriteFile(_win_init.stdout, msg, count, 0, 0);
     MessageBoxA(0, (char*)msg, "Message", MB_OK);
 }
 internal void osPanic(const char* msg) {
