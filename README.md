@@ -3,7 +3,8 @@
 Tiny version of c stdlib and c compiler run time with no external dependencies (except OS libs)
 
 ## dev
-Vscode settings:
+
+### vscode
 ```json
 {
     "C_Cpp.default.compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe",
@@ -13,8 +14,7 @@ Vscode settings:
 }
 ```
 
-Compile `tests/hello_linux.cpp` with
-
+### compile
 ```
 clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DRELEASE
 ```
@@ -27,7 +27,7 @@ $ ls -la out
 -rwxrwxrwx 1 lin lin   4096 Mar 29 17:23 hello_win64.exe
 ```
 
-List used symbols:
+### list symbols (linux)
 ```
 $ nm out/hello_linux
 0000000000400360 t _ZL10linuxWriteiPKhy
@@ -51,3 +51,12 @@ $ nm out/hello_linux
 0000000000400580 T linuxMmap
 00000000004001b0 T main
 ```
+
+### visual studio (windows)
+```
+Run devenv out/hello_win64.exe
+Press F11 to break on first line
+```
+
+### perf stat
+TODO: perf stat out/hello_linux
