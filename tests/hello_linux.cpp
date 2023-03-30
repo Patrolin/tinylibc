@@ -25,9 +25,6 @@
 int main(int argc, char* argv[]) {
     print("Hello world\n");
     print(123);
-    auto cycles = cpuCycles();
-    print(cycles.cycles);
-    print(cycles.core);
     #if PTHREAD
         pthread_t threadId;
         pthread_create(&threadId, 0, threadCallback, 0);
