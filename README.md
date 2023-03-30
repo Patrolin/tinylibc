@@ -49,14 +49,35 @@ $ nm out/hello_linux
 0000000000400540 T linuxMmap
 00000000004001b0 T main
 ```
+### list symbols (windows)
+Build with `-z -Map:out/hello_win64.map`
 
-### visual studio (windows)
+### debugger (windows)
 ```
-Run devenv out/hello_win64.exe
+Install Visual studio > C++ profiling tools
+$ devenv out/hello_win64.exe
 Press F11 to break on first line
 ```
 
-### perf stat (linux)
-TODO: perf stat out/hello_linux
+### list syscalls (linux)
+```
+$ strace out/hello_linux
+execve("out/hello_linux", ["out/hello_linux"], 0x7ffe9ee0b590 /* 19 vars */) = 0
+write(1, "Hello world\n", 12Hello world) = 12
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0x7f0319fc8000
+write(1, "123\n", 4123)                  = 4
+exit(0)                                  = ?
++++ exited with 0 +++
+```
 
+### query counters (linux)
+TODO: what is the output on non-WSL linux?
+```
+$ sudo apt install linux-tools-generic
+$ perf stat out/hello_linux
+```
+
+### query counters (windows)
 (Visual studio removed their version)
+
+TODO: use someone else's driver?
