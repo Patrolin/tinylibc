@@ -97,3 +97,20 @@ $ perf stat out/hello_linux
 (Visual studio removed their version)
 
 TODO: use someone else's driver?
+
+### asm
+u64 rax; u32 eax; u16 ax; u8 al;
+
+prefixes:
+|write|read/write|early clobber|commutative pair|
+|-----|----------|-------------|----------------|
+|=    |+         |&            |%               |
+
+asm registers are undefined behavior if you dare to use "=rax" instead of "=a"
+
+also this is architecture specific...
+|rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|any general register|
+|---|---|---|---|---|---|---|---|--------------------|
+|a  |b  |c  |d  |?  |?  |?  |?  |r                   |
+
+asm clobber "memory" means don't reorder in compiler

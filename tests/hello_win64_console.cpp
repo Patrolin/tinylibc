@@ -4,4 +4,7 @@
 int main(int argc, char* argv[]) {
     print("Hello world\n");
     print(123);
+    auto cycles = cpuCycles();
+    print(cycles.cycles);
+    print(cycles.core);
 }

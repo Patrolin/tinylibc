@@ -36,6 +36,7 @@ external void* linuxMmap(void* address, uint size, int protection, int flags, in
 internal int linuxMunmap(void* address, uint length);
 internal long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
 internal int nanosleep(const struct timespec *req, struct timespec *rem);
+// TODO: getcpu()?
 
 // syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))

@@ -42,3 +42,7 @@
 #else
     static_assert(false, "Unknown bits");
 #endif
+
+#define _lfence asm volatile ("lfence" ::: "memory")
+#define _sfence asm volatile ("sfence" ::: "memory")
+#define _mfence asm volatile ("mfence" ::: "memory")

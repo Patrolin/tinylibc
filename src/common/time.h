@@ -1,14 +1,23 @@
 // cpu cycles
-internal uint cpuTimeCycles() {
+internal u64 cpuCycles() {
     #if ARCH_X64
-        u64 time;
-        // TODO: rdtscp?
-        asm volatile ( "rdtsc\n\t"
-            "shl $32, %%rdx\n\t"
-            "or %%rdx, %%rax"
-            : "=rax" (time)
-            :: "rdx");
-        return time;
+        u64 eax, edx;
+        asm volatile ("mfence;rdtscp" : "=a" (eax), "=d" (edx) :: "memory");
+        return (edx << 32) + eax;
+    #else
+        static_assert(false, "Unsupported architecture");
+    #endif
+}
+struct CpuCyclesCore {
+    u64 cycles;
+    u32 core;
+};
+internal CpuCyclesCore cpuCyclesCore() {
+    #if ARCH_X64
+        u64 eax, edx;
+        u32 core;
+        asm volatile ("rdtscp" : "=a" (eax), "=d" (edx), "=c" (core) :: "memory");
+        return CpuCyclesCore{ (edx << 32) + eax, core };
     #else
         static_assert(false, "Unsupported architecture");
     #endif
