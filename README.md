@@ -24,9 +24,9 @@ $ ls -la out
 -rwxrwxrwx 1 lin lin   3728 Mar 30 14:13 hello_linux
 -rwxrwxrwx 1 lin lin   4096 Mar 30 14:07 hello_win64.exe
 ```
-(`internal void f() {...}` only includes functions that are actually used)
 
 ### list symbols (linux)
+`internal void f() {...}` only includes functions that are actually used:
 ```
 $ nm out/hello_linux
 0000000000400350 t _ZL10linuxWriteiPKhy
@@ -58,4 +58,5 @@ Press F11 to break on first line
 
 ### perf stat (linux)
 TODO: perf stat out/hello_linux
-(Visual studio deprecated their version)
+
+(Visual studio removed their version)
