@@ -54,6 +54,7 @@ Build with `-z -Map:out/hello_win64.map`
 
 ### debugger (windows)
 ```
+Build with `-g -gcodeview`
 Install Visual studio > C++ profiling tools
 $ devenv out/hello_win64.exe
 Press F11 to break on first line
