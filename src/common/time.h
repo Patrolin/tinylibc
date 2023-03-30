@@ -1,9 +1,9 @@
 // cpu cycles
 internal u64 cpuCycles() {
     #if ARCH_X64
-        u64 eax, edx;
+        u32 eax, edx;
         asm volatile ("mfence;rdtscp" : "=a" (eax), "=d" (edx) :: "memory");
-        return (edx << 32) + eax;
+        return ((u64)edx << 32) + (u64)eax;
     #else
         static_assert(false, "Unsupported architecture");
     #endif
@@ -14,10 +14,9 @@ struct CpuCyclesCore {
 };
 internal CpuCyclesCore cpuCyclesCore() {
     #if ARCH_X64
-        u64 eax, edx;
-        u32 core;
+        u32 eax, edx, core;
         asm volatile ("rdtscp" : "=a" (eax), "=d" (edx), "=c" (core) :: "memory");
-        return CpuCyclesCore{ (edx << 32) + eax, core };
+        return CpuCyclesCore{ ((u64)edx << 32) + (u64)eax, core };
     #else
         static_assert(false, "Unsupported architecture");
     #endif

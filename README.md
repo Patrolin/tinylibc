@@ -40,6 +40,25 @@ $ ls -la out
 -rwxrwxrwx 1 lin lin   3584 Mar 30 17:12 hello_win64_console.exe
 ```
 
+### debugger (windows)
+```
+Build with `-g -gcodeview`
+Install Visual studio > C++ profiling tools
+$ devenv out/hello_win64.exe
+Press F11 to break on first line
+```
+
+### debugger (linux)
+gdb?
+
+### disassemble (windows)
+Same as "debugger (windows)", but switch to "Disassembly" tab
+
+### disassemble (linux)
+```
+$ objdump -Dz out/hello_linux > out/hello_linux.asm
+```
+
 ### list symbols (linux)
 `internal void f() {...}` only includes functions that are actually used:
 ```
@@ -66,14 +85,6 @@ $ nm out/hello_linux
 ```
 ### list symbols (windows)
 Build with `-z -Map:out/hello_win64.map`
-
-### debugger (windows)
-```
-Build with `-g -gcodeview`
-Install Visual studio > C++ profiling tools
-$ devenv out/hello_win64.exe
-Press F11 to break on first line
-```
 
 ### list syscalls (linux)
 ```
@@ -111,8 +122,8 @@ asm registers are undefined behavior if you dare to use "=rax" instead of "=a"
 `register u32 x asm ("a") = ...;` uses the same bs notation...
 
 also this is architecture specific...
-|rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|any general register|
-|---|---|---|---|---|---|---|---|--------------------|
-|a  |b  |c  |d  |?  |?  |?  |?  |r                   |
+|rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8-r15|any general register|
+|---|---|---|---|---|---|---|---|------|--------------------|
+|a  |b  |c  |d  |?  |?  |?  |?  |N/A   |r                   |
 
 asm clobber "memory" means don't reorder in compiler
