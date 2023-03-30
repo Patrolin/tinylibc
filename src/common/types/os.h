@@ -20,7 +20,10 @@ internal void assert(bool32 condition, const char* msg) {
         if (!condition) osPanic(msg);
     #endif
 }
-internal void _pageAllocAssert(void* prev_ptr, uint size, void* ptr) {
-    assert((ptr != 0), "AllocError: ptr = 0\n");
-    assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
-}
+#if BUILD_RELEASE
+    #define _pageAllocAssert(prev_ptr, size, ptr)
+#else
+    #define _pageAllocAssert(prev_ptr, size, ptr) \
+        assert((ptr != 0), "AllocError: ptr = 0\n"); \
+        assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
+#endif
