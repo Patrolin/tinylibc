@@ -108,6 +108,8 @@ prefixes:
 
 asm registers are undefined behavior if you dare to use "=rax" instead of "=a"
 
+`register u32 x asm ("a") = ...;` uses the same bs notation...
+
 also this is architecture specific...
 |rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|any general register|
 |---|---|---|---|---|---|---|---|--------------------|

@@ -42,7 +42,6 @@ internal int nanosleep(const struct timespec *req, struct timespec *rem);
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
 #define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b))
 #define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
-// (gcc register syntax does not work at all)
 
 #if ARCH_X64
     internal void linuxExit(uint return_code) {
