@@ -11,8 +11,10 @@ static_assert(OS_WIN && BITS_64, "Must compile on 64-bit Windows!");
 // subsystem
 #ifdef BUILD_CONSOLE
     #pragma comment(linker, "/subsystem:console")
+    extern int main(int argc, char* argv[]);
 #else
     #pragma comment(linker, "/subsystem:windows")
+    extern int WinMain(HINSTANCE app, HINSTANCE prev_app, LPSTR command, int window_options);
 #endif
 
 // _winInit()
@@ -22,7 +24,7 @@ struct WinInit {
     HANDLE stderr = 0;
 };
 global WinInit _win_init = {};
-void _winInit() {
+internal void _winInit() {
     _win_init.stdin = GetStdHandle(-10);
     _win_init.stdout = GetStdHandle(-11);
     _win_init.stderr = GetStdHandle(-12);
@@ -52,11 +54,15 @@ internal void* osPageAlloc(void* prev_ptr, uint size) {
 }
 // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)
 
-int WinMain(HINSTANCE app, HINSTANCE prev_app, LPSTR command, int window_options);
 external int _start() {
     //crtInit();
     _winInit();
-    int retCode = WinMain(0, 0, 0, 0);
+    // TODO: pass arguments
+    #if BUILD_CONSOLE
+        int retCode = main(0, 0);
+    #else
+        int retCode = WinMain(0, 0, 0, 0);
+    #endif
     //_DoExit();
     ExitProcess(retCode);
 }

@@ -14,15 +14,30 @@ Tiny version of c stdlib and c compiler run time with no external dependencies (
 }
 ```
 
-### compile
+### compile (windows)
 ```
 $ clang tests/hello_libc.cpp -o out/hello_libc.exe
 $ clang tests/hello_win64.cpp -o out/hello_win64.exe -DBUILD_RELEASE
+$ clang tests/hello_win64.cpp -o out/hello_win64_console.exe -DBUILD_RELEASE
+```
+
+### compile (linux)
+```
+$ clang tests/hello_libc.cpp -o out/hello_libc
 $ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE
+```
+```
+$ out/hello_linux
+Hello world
+123
+```
+```
 $ ls -la out
--rwxrwxrwx 1 lin lin 123904 Mar 30 14:08 hello_libc.exe
--rwxrwxrwx 1 lin lin   3728 Mar 30 14:13 hello_linux
--rwxrwxrwx 1 lin lin   4096 Mar 30 14:07 hello_win64.exe
+-rwxrwxrwx 1 lin lin  16464 Mar 30 17:13 hello_libc
+-rwxrwxrwx 1 lin lin 123904 Mar 30 17:07 hello_libc.exe
+-rwxrwxrwx 1 lin lin   3728 Mar 30 17:13 hello_linux
+-rwxrwxrwx 1 lin lin   3584 Mar 30 17:12 hello_win64.exe
+-rwxrwxrwx 1 lin lin   3584 Mar 30 17:12 hello_win64_console.exe
 ```
 
 ### list symbols (linux)
