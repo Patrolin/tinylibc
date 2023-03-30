@@ -14,9 +14,10 @@ internal void osPanic(const char* msg);
 internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
 internal void osSleep(uint ms);
 internal void osNanosleep(uint ms);
+internal u64 osNanoTime();
 // TODO: internal void osCreateThread(callback f);
 // TODO: internal void osCreateSemaphore(?);
-// TODO: internal uint osTime(uint* time);
+// TODO: internal u64 osDateTime();
 
 internal void assert(bool32 condition, const char* msg) {
     #ifndef BUILD_RELEASE
