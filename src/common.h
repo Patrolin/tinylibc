@@ -5,5 +5,6 @@
 #include "common/types/bit_twiddling.h"
 #include "common/types/fixed.h"
 
+#include "common/time.h"
 #include "common/string.h"
 #include "common/alloc.h"

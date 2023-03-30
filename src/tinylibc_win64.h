@@ -4,8 +4,9 @@
 static_assert(OS_WIN && BITS_64, "Must compile on 64-bit Windows!");
 
 #include <windows.h>
-#pragma comment(linker, "/defaultlib:user32.lib")
 #pragma comment(linker, "/defaultlib:kernel32.lib")
+#pragma comment(linker, "/defaultlib:user32.lib")
+#pragma comment(linker, "/defaultlib:winmm.lib") // timer
 #pragma comment(linker, "/ENTRY:_start")
 
 // subsystem
@@ -22,12 +23,18 @@ struct WinInit {
     HANDLE stdin = 0;
     HANDLE stdout = 0;
     HANDLE stderr = 0;
+
 };
 global WinInit _win_init = {};
 internal void _winInit() {
-    _win_init.stdin = GetStdHandle(-10);
+    // stdout
+    _win_init.stdin = GetStdHandle(-10); // 0 if subsystem != console
     _win_init.stdout = GetStdHandle(-11);
     _win_init.stderr = GetStdHandle(-12);
+    // timer
+    uint set_timer_resolution_error = timeBeginPeriod(1);
+    // TODO: binary search to find actual granularity
+    assert(set_timer_resolution_error == TIMERR_NOERROR, "Failed to set timer resolution");
 }
 
 // os
@@ -51,6 +58,12 @@ internal void* osPageAlloc(void* prev_ptr, uint size) {
     void* ptr = VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
     _pageAllocAssert(prev_ptr, size, ptr);
     return ptr;
+}
+internal void osSleep(u64 ms) {
+    Sleep(ms);
+}
+internal void osNanosleep(u64 ms) {
+    assert(false, "TODO");
 }
 // TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)
 

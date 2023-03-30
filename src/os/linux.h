@@ -6,6 +6,8 @@
 #define _LINUX_MUNMAP 11
 #define _LINUX_BRK 12
 
+#define _LINUX_NANOSLEEP 35
+
 #define _LINUX_CLONE 56
 #define _LINUX_FORK 57
 #define _LINUX_VFORK 58
@@ -33,6 +35,7 @@ external void* linuxMmap(void* address, uint size, int protection, int flags, in
 #define MAP_STACK 0x20000
 internal int linuxMunmap(void* address, uint length);
 internal long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
+internal int nanosleep(const struct timespec *req, struct timespec *rem);
 
 // syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
 #define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))

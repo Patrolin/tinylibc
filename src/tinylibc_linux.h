@@ -19,6 +19,14 @@ internal void* osPageAlloc(void* prev_ptr, uint size) {
     _pageAllocAssert(prev_ptr, size, ptr);
     return ptr;
 }
+internal void osSleep(u64 ms) {
+    assert(false, "TODO");
+    //linuxSleep(ms);
+}
+internal void osNanosleep(u64 ms) {
+    assert(false, "TODO");
+    //linuxNanosleep(ms);
+}
 // TODO: exceptions: ??
 
 extern int main(int argc, char* argv[]);

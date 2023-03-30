@@ -12,8 +12,11 @@ internal void osExit(uint return_code);
 internal void osPrint(const u8* msg, uint count);
 internal void osPanic(const char* msg);
 internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
-//void osCreateThread(callback f);
-//void osCreateSemaphore(?);
+internal void osSleep(uint ms);
+internal void osNanosleep(uint ms);
+// TODO: internal void osCreateThread(callback f);
+// TODO: internal void osCreateSemaphore(?);
+// TODO: internal uint osTime(uint* time);
 
 internal void assert(bool32 condition, const char* msg) {
     #ifndef BUILD_RELEASE
@@ -24,6 +27,6 @@ internal void assert(bool32 condition, const char* msg) {
     #define _pageAllocAssert(prev_ptr, size, ptr)
 #else
     #define _pageAllocAssert(prev_ptr, size, ptr) \
-        assert((ptr != 0), "AllocError: ptr = 0\n"); \
+        assert((ptr != 0), "AllocError: ptr = 0\n"); /* TODO: os does not support realloc */ \
         assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
 #endif
