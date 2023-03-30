@@ -1,5 +1,18 @@
 ## tinylibc
 
+A tiny c stdlib and compiler runtime with no external dependencies (except OS libs)
+
+## dev
+Vscode settings:
+```json
+{
+    "C_Cpp.default.compilerPath": "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang.exe"
+    "C_Cpp.default.defines": ["__x86_64__"],
+    "C_Cpp.codeAnalysis.updateDelay": 0,
+    "C_Cpp.vcFormat.indent.preprocessor": "none",
+}
+```
+
 Compile `tests/hello_linux.cpp` with
 
 ```
@@ -14,7 +27,7 @@ $ ls -la out
 -rwxrwxrwx 1 lin lin   4096 Mar 29 17:23 hello_win64.exe
 ```
 
-Used functions:
+List used symbols:
 ```
 $ nm out/hello_linux
 0000000000400360 t _ZL10linuxWriteiPKhy
@@ -37,15 +50,4 @@ $ nm out/hello_linux
 0000000000400180 T _start
 0000000000400580 T linuxMmap
 00000000004001b0 T main
-```
-
-## dev
-Vscode settings:
-```json
-{
-    "C_Cpp.default.compilerPath": "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang.exe"
-    "C_Cpp.default.defines": ["__x86_64__"],
-    "C_Cpp.codeAnalysis.updateDelay": 0,
-    "C_Cpp.vcFormat.indent.preprocessor": "none",
-}
 ```
