@@ -16,28 +16,29 @@ Tiny version of c stdlib and c compiler run time with no external dependencies (
 
 ### compile (windows)
 ```
-$ clang tests/hello_libc.cpp -o out/hello_libc.exe
-$ clang tests/hello_win64.cpp -o out/hello_win64.exe -DBUILD_RELEASE
-$ clang tests/hello_win64.cpp -o out/hello_win64_console.exe -DBUILD_RELEASE
-```
-
-### compile (linux)
-```
-$ clang tests/hello_libc.cpp -o out/hello_libc
-$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE
+$ clang tests/hello_libc.cpp -o out/hello_libc.exe -O3
+$ clang tests/hello_win64.cpp -o out/hello_win64.exe -DBUILD_RELEASE -O3
+$ clang tests/hello_win64_console.cpp -o out/hello_win64_console.exe -DBUILD_RELEASE -O3
 ```
 ```
-$ out/hello_linux
+$ out/hello_win64_console.exe
 Hello world
 123
 ```
+
+### compile (linux)
+TODO: gdb to make hello_linux work with -O3 (and lld)
+```
+$ clang tests/hello_libc.cpp -o out/hello_libc -O3
+$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE
+```
 ```
 $ ls -la out
--rwxrwxrwx 1 lin lin  16464 Mar 30 17:13 hello_libc
--rwxrwxrwx 1 lin lin 123904 Mar 30 17:07 hello_libc.exe
--rwxrwxrwx 1 lin lin   3728 Mar 30 17:13 hello_linux
--rwxrwxrwx 1 lin lin   3584 Mar 30 17:12 hello_win64.exe
--rwxrwxrwx 1 lin lin   3584 Mar 30 17:12 hello_win64_console.exe
+-rwxrwxrwx 1 lin lin  16512 Mar 31 00:55 hello_libc
+-rwxrwxrwx 1 lin lin 124928 Mar 31 00:55 hello_libc.exe
+-rwxrwxrwx 1 lin lin   3656 Mar 31 00:57 hello_linux
+-rwxrwxrwx 1 lin lin   3072 Mar 31 00:56 hello_win64.exe
+-rwxrwxrwx 1 lin lin   3072 Mar 31 00:56 hello_win64_console.exe
 ```
 
 ### debugger (windows)
@@ -49,14 +50,20 @@ Press F11 to break on first line
 ```
 
 ### debugger (linux)
-gdb?
+```
+Build with `-g`
+$ gdb out/hello_linux
+    $ lay next
+    Hit enter twice
+    $ break main
+```
 
 ### disassemble (windows)
 Same as "debugger (windows)", but switch to "Disassembly" tab
 
 ### disassemble (linux)
 ```
-$ objdump -Dz out/hello_linux > out/hello_linux.asm
+$ objdump -M intel -Dz out/hello_linux > out/hello_linux.asm
 ```
 
 ### list symbols (linux)

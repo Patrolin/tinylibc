@@ -19,7 +19,7 @@
 #define _LINUX_GETCPU 309 // TODO
 
 // man 2 <syscall>
-internal void linuxExit(int return_code);
+external void linuxExit(int return_code);
 internal sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
@@ -44,9 +44,6 @@ internal int nanosleep(const struct timespec *req, struct timespec *rem);
 #define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
 
 #if ARCH_X64
-    internal void linuxExit(uint return_code) {
-        _SYSCALL1(_LINUX_EXIT, 0);
-    }
     internal sint linuxWrite(int file, const u8* msg, uint count) {
         sint bytes_written;
         _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);

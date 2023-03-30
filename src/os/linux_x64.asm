@@ -3,6 +3,10 @@
 section .text
 
 ; function call: rax = f(rdi, rsi, rdx, rcx, r8, r9)
+global linuxExit
+linuxExit:
+    mov rax, 60
+    syscall
 %macro _SYSCALL6 2
     global %1
     %1:
