@@ -16,7 +16,7 @@ Tiny version of c stdlib and c compiler run time with no external dependencies (
 
 ### compile
 ```
-clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DRELEASE
+clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE
 ```
 
 `internal void f() {...}` only includes functions that are actually used:

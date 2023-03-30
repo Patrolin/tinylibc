@@ -14,10 +14,12 @@ struct WinInit {
     HANDLE stdout = 0;
     HANDLE stderr = 0;
     void init() {
-        AllocConsole(); // TODO: split into win64_console?
-        this->stdin = GetStdHandle(-10);
-        this->stdout = GetStdHandle(-11);
-        this->stderr = GetStdHandle(-12);
+        #ifndef BUILD_VS
+            AllocConsole(); // TODO: win64_console?
+            this->stdin = GetStdHandle(-10);
+            this->stdout = GetStdHandle(-11);
+            this->stderr = GetStdHandle(-12);
+        #endif
     }
 };
 global WinInit _win_init = {};
@@ -26,8 +28,11 @@ internal void osExit(uint return_code) {
     ExitProcess(return_code);
 }
 internal void osPrint(const u8* msg, uint count) {
-    WriteConsole(_win_init.stdout, msg, count, 0, 0);
-    //WriteFile(_win_init.stdout, msg, count, 0, 0);
+    #ifdef BUILD_VISUAL_STUDIO
+        OutputDebugString((char*)msg);
+    #else
+        WriteFile(_win_init.stdout, msg, count, 0, 0);
+    #endif
     MessageBoxA(0, (char*)msg, "Message", MB_OK);
 }
 internal void osPanic(const char* msg) {

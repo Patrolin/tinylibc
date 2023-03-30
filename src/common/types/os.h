@@ -16,7 +16,7 @@ internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_S
 //void osCreateSemaphore(?);
 
 internal void assert(bool32 condition, const char* msg) {
-    #ifndef RELEASE
+    #ifndef BUILD_RELEASE
         if (!condition) osPanic(msg);
     #endif
 }
