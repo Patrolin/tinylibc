@@ -1,6 +1,6 @@
 ## tinylibc
 
-A tiny c stdlib and compiler runtime with no external dependencies (except OS libs)
+Tiny version of c stdlib and c compiler run time with no external dependencies (except OS libs)
 
 ## dev
 Vscode settings:
