@@ -20,7 +20,7 @@
 
 // man 2 <syscall>
 external void linuxExit(int return_code);
-internal sint linuxWrite(int file, const u8* msg, uint count);
+external sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
 #define _STDERR 2
@@ -33,32 +33,11 @@ external void* linuxMmap(void* address, uint size, int protection, int flags, in
 #define MAP_SHARED_VALIDATE 0x03
 #define MAP_ANONYMOUS 0x20
 #define MAP_STACK 0x20000
-internal int linuxMunmap(void* address, uint length);
-internal long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
-internal int nanosleep(const struct timespec *req, struct timespec *rem);
+external int linuxMunmap(void* address, uint length);
+external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
+external int nanosleep(const struct timespec *req, struct timespec *rem);
 // TODO: getcpu()?
 
 // syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
-#define _SYSCALL1(id, a) asm volatile ("syscall" :: "rax"(id), "rdi"(a))
-#define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b))
-#define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c))
-
-#if ARCH_X64
-    internal sint linuxWrite(int file, const u8* msg, uint count) {
-        sint bytes_written;
-        _SYSCALL3_OUT(_LINUX_WRITE, file, msg, 1, bytes_written);
-        return bytes_written;
-    }
-    internal int linuxMunmap(void* address, uint length) {
-        int error_code;
-        _SYSCALL2_OUT(_LINUX_MUNMAP, address, length, error_code);
-        return error_code;
-    }
-    internal long linuxClone(unsigned long flags, void *stack, int *parent_tid, int *child_tid, unsigned long tls) {
-        long isParent;
-        // TODO
-        return isParent;
-    }
-#else
-    static_assert(false, "Unsupported architecture")
-#endif
+#define _SYSCALL2_OUT(id, a, b, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b) : "rcx", "memory")
+#define _SYSCALL3_OUT(id, a, b, c, out) asm volatile ("syscall" : "=rax"(out) : "rax"(id), "rdi"(a), "rsi"(b), "rdx"(c) : "rcx", "memory")

@@ -21,13 +21,14 @@
         return 0;
     }
 #endif
+#if PTHREAD
+    pthread_t threadId;
+    pthread_create(&threadId, 0, threadCallback, 0);
+    for(;;);
+#endif
 
 int main(int argc, char* argv[]) {
     print("Hello world\n");
     print(123);
-    #if PTHREAD
-        pthread_t threadId;
-        pthread_create(&threadId, 0, threadCallback, 0);
-        for(;;);
-    #endif
+    return 0;
 }

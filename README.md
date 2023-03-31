@@ -56,6 +56,11 @@ $ gdb out/hello_linux
     $ lay next
     Hit enter twice
     $ break main
+    # run
+    $ next // next line
+    # step // step into next line
+    $ nexti // next instruction
+    # stepi // step into next instruction
 ```
 
 ### disassemble (windows)
