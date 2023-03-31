@@ -30,15 +30,15 @@ Hello world
 TODO: gdb to make hello_linux work with -O3 (and lld)
 ```
 $ clang tests/hello_libc.cpp -o out/hello_libc -O3
-$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE
+$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE -O3
 ```
 ```
 $ ls -la out
--rwxrwxrwx 1 lin lin  16512 Mar 31 00:55 hello_libc
--rwxrwxrwx 1 lin lin 124928 Mar 31 00:55 hello_libc.exe
--rwxrwxrwx 1 lin lin   3656 Mar 31 00:57 hello_linux
--rwxrwxrwx 1 lin lin   3072 Mar 31 00:56 hello_win64.exe
--rwxrwxrwx 1 lin lin   3072 Mar 31 00:56 hello_win64_console.exe
+-rwxrwxrwx 1 lin lin  16512 Mar 31 02:25 hello_libc
+-rwxrwxrwx 1 lin lin 124928 Mar 31 02:25 hello_libc.exe
+-rwxrwxrwx 1 lin lin   2544 Mar 31 02:25 hello_linux
+-rwxrwxrwx 1 lin lin   3072 Mar 31 02:26 hello_win64.exe
+-rwxrwxrwx 1 lin lin   3072 Mar 31 02:26 hello_win64_console.exe
 ```
 
 ### debugger (windows)
