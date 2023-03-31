@@ -19,12 +19,11 @@ internal void osPanic(const char* msg);
 #else
     #define assert(condition, msg) if (!(condition)) osPanic(msg);
 #endif
-#define _pageAllocAssert(prev_ptr, size, ptr) \
-    assert((ptr != 0), "AllocError: ptr = 0\n"); /* TODO: os does not support realloc */ \
-    assert((prev_ptr == 0) || (ptr == prev_ptr), "AllocError: moved prev_ptr");
+#define _osPageAllocAssert(ptr) \
+    assert((ptr != 0), "AllocError: ptr = 0\n");
 
 // alloc
-internal void* osPageAlloc(void* prev_ptr, uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
+internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
 
 // time
 internal void osSleep(uint ms);

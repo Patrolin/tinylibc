@@ -60,9 +60,10 @@ internal void osPanic(const char* msg) {
     MessageBoxA(0, msg, "Panic", MB_OK|MB_ICONERROR);
     osExit(1);
 };
-internal void* osPageAlloc(void* prev_ptr, uint size) {
-    void* ptr = VirtualAlloc(prev_ptr, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
-    _pageAllocAssert(prev_ptr, size, ptr);
+internal void* osPageAlloc(uint size) {
+    void* ptr = VirtualAlloc(0, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+    // TODO: huge pages?
+    _osPageAllocAssert(ptr);
     return ptr;
 }
 internal void osSleep(u64 ms) {

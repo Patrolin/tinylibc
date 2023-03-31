@@ -15,9 +15,10 @@ internal void osPanic(const char* msg) {
     print(msg);
     osExit(1);
 }
-internal void* osPageAlloc(void* prev_ptr, uint size) {
-    void* ptr = linuxMmap(prev_ptr, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
-    _pageAllocAssert(prev_ptr, size, ptr);
+internal void* osPageAlloc(uint size) {
+    // TODO: round up to PAGE_SIZE
+    void* ptr = linuxMmap(0, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+    _osPageAllocAssert(ptr);
     return ptr;
 }
 

@@ -1,14 +1,32 @@
+/*
+    |0,0,1,100|                              |
+    alloc(64)
+    |0,64,1,64 |xxx|1,0,64,100|              |
+    free(1)
+    |              |0,0,1,100|               |
+    free(64)
+
+    alloc(64)
+    |0,64,1,64 |xxx|1,0,64,100|              |
+    free(64)
+    |0,0,1,100 |xxx|                         |
+    free(1)
+*/
+
 struct _FreeBlock {
+    _FreeBlock* prev;
     _FreeBlock* next;
-    uint max_size;
+    void* start;
+    void* end;
 };
 struct _FreeListAlloc {
     _FreeBlock* first_block = 0;
     void* start = 0;
+    // TODO
 };
 global _FreeListAlloc _alloc = {};
 internal void _allocInit() {
-    _FreeBlock* start = (_FreeBlock*)osPageAlloc(_alloc.start, PAGE_SIZE);
+    _FreeBlock* start = (_FreeBlock*)osPageAlloc(PAGE_SIZE);
     _alloc.start = start;
     _alloc.first_block = start;
 }
@@ -37,7 +55,7 @@ internal void* alloc(uint size) {
     _FreeBlock* curr = match.curr;
     if (curr == 0) {
         uint new_size = ceil(size + sizeof(_FreeBlock), PAGE_SIZE);
-        _FreeBlock* curr = (_FreeBlock*)osPageAlloc(_alloc.start, new_size);
+        _FreeBlock* curr = (_FreeBlock*)osPageAlloc(new_size);
         curr->max_size = new_size;
     } else {
         if (prev == 0) {

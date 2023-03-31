@@ -14,7 +14,8 @@ internal void* talloc(uint size) {
     uint new_size = _talloc.size + size;
     if (new_size > _talloc.max_size) {
         uint new_size = _talloc.max_size + PAGE_SIZE;
-        _talloc.start = (u8*)osPageAlloc(_talloc.start, new_size);
+        assert(_talloc.start == 0, "AllocError: cannot realloc");
+        _talloc.start = (u8*)osPageAlloc(new_size);
         _talloc.max_size = new_size;
     }
     void* data = _talloc.start + _talloc.size;
