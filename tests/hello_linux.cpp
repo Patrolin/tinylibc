@@ -30,5 +30,6 @@
 int main(int argc, char* argv[]) {
     print("Hello world\n");
     print(123);
+    print(sprint({sprint("Abc "), sprint("Xyz\n")}));
     return 0;
 }
