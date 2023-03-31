@@ -20,7 +20,8 @@ internal void osPanic(const char* msg);
     #define assert(condition, msg) if (!(condition)) osPanic(msg);
 #endif
 #define _osPageAllocAssert(ptr) \
-    assert((ptr != 0), "AllocError: ptr = 0\n");
+    assert((ptr != 0), "AllocError: ptr = 0\n"); \
+    assert((((u64)ptr % PAGE_SIZE) == 0), "AllocError: ptr is not page aligned\n");
 
 // alloc
 internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
@@ -34,3 +35,4 @@ internal u64 osNanoTime();
 // threads
 // TODO: internal void osCreateThread(callback f);
 // TODO: internal void osCreateSemaphore(?);
+// TODO: readme (threads own cache lines)

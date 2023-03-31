@@ -13,33 +13,34 @@
     free(1)
 */
 
-struct _FreeBlock {
-    _FreeBlock* prev;
-    _FreeBlock* next;
+struct _AllocBlock {
+    _AllocBlock* prev;
+    _AllocBlock* next;
     void* start;
     void* end;
 };
 struct _FreeListAlloc {
-    _FreeBlock* first_block = 0;
+    _AllocBlock* first_block = 0;
     void* start = 0;
     // TODO
 };
 global _FreeListAlloc _alloc = {};
 internal void _allocInit() {
-    _FreeBlock* start = (_FreeBlock*)osPageAlloc(PAGE_SIZE);
+    _AllocBlock* start = (_AllocBlock*)osPageAlloc(PAGE_SIZE);
     _alloc.start = start;
     _alloc.first_block = start;
 }
-struct _FreeBlockMatch {
-    _FreeBlock* prev;
-    _FreeBlock* curr;
+struct _AllocBlockMatch {
+    _AllocBlock* prev;
+    _AllocBlock* curr;
 };
-internal void _allocFindBlockOrNull(uint size, _FreeBlockMatch* match) {
-    _FreeBlock* prev = 0;
-    _FreeBlock* curr = _alloc.first_block;
+/* TODO
+internal void _allocFindBlockOrNull(uint size, _AllocBlockMatch* match) {
+    _AllocBlock* prev = 0;
+    _AllocBlock* curr = _alloc.first_block;
     if (curr == 0) return;
     while(curr->next) {
-        if (curr->max_size + sizeof(_FreeBlock) >= size) {
+        if (curr->max_size + sizeof(_AllocBlock) >= size) {
             *match = { prev, curr };
             return;
         }
@@ -49,13 +50,13 @@ internal void _allocFindBlockOrNull(uint size, _FreeBlockMatch* match) {
     return;
 }
 internal void* alloc(uint size) {
-    _FreeBlockMatch match = {};
+    _AllocBlockMatch match = {};
     _allocFindBlockOrNull(size, &match);
-    _FreeBlock* prev = match.prev;
-    _FreeBlock* curr = match.curr;
+    _AllocBlock* prev = match.prev;
+    _AllocBlock* curr = match.curr;
     if (curr == 0) {
-        uint new_size = ceil(size + sizeof(_FreeBlock), PAGE_SIZE);
-        _FreeBlock* curr = (_FreeBlock*)osPageAlloc(new_size);
+        uint new_size = ceil(size + sizeof(_AllocBlock), PAGE_SIZE);
+        _AllocBlock* curr = (_AllocBlock*)osPageAlloc(new_size);
         curr->max_size = new_size;
     } else {
         if (prev == 0) {
@@ -68,10 +69,11 @@ internal void* alloc(uint size) {
     return curr + 1;
 }
 internal void free(void* ptr) {
-    _FreeBlock* block = (_FreeBlock*)ptr - 1;
+    _AllocBlock* block = (_AllocBlock*)ptr - 1;
     assert(block->max_size > 0, "AllocError: cannot free empty block");
     block->next = _alloc.first_block;
     _alloc.first_block = block;
     // TODO: merge blocks
     // TODO: release memory??
 }
+*/
