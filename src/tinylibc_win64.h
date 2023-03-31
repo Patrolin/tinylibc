@@ -60,12 +60,17 @@ internal void osPanic(const char* msg) {
     MessageBoxA(0, msg, "Panic", MB_OK|MB_ICONERROR);
     osExit(1);
 };
+
 internal void* osPageAlloc(uint size) {
     void* ptr = VirtualAlloc(0, size, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
     // TODO: huge pages?
     _osPageAllocAssert(ptr);
     return ptr;
 }
+internal void osPageFree(void* ptr) {
+    //VirtualFree(ptr); // TODO
+}
+
 internal void osSleep(u64 ms) {
     Sleep(ms);
 }
@@ -83,6 +88,7 @@ internal u64 osNanoTime() {
 external int _start() {
     //crtInit();
     _winInit();
+    _tallocInit();
     // TODO: pass arguments
     #if BUILD_CONSOLE
         int retCode = main(0, 0);

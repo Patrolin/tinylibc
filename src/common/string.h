@@ -51,6 +51,7 @@ internal void debugPrint(u64 number) {
 // tprint
 internal void* talloc(uint size);
 
+// TODO: print into buffer by default, sprintf() via talloc()
 internal void print(u64 number) {
     String str = printInto((u8*)talloc(U64_MAX_BASE10_DIGITS+2), number);
     str.msg[str.count++] = '\n';

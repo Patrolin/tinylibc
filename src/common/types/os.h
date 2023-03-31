@@ -25,6 +25,7 @@ internal void osPanic(const char* msg);
 
 // alloc
 internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
+internal void osPageFree(void* ptr); // free pages allocated by osPageAlloc()
 
 // time
 internal void osSleep(uint ms);

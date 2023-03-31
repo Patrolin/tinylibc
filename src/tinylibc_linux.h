@@ -39,6 +39,7 @@ internal u64 osNanoTime() {
 extern int main(int argc, char* argv[]);
 external void _start() {
     //crtInit();
+    _tallocInit();
     // TODO:
     // pop rdi     /* argc */
     // mov rsi,rsp /* argv */
