@@ -58,4 +58,5 @@ external int _start() {
     #endif
     //_DoExit();
     osExit(return_code);
+    return 0;
 }
