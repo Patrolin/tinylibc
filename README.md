@@ -29,16 +29,16 @@ Hello world
 ### compile (linux)
 TODO: gdb to make hello_linux work with -O3 (and lld)
 ```
-$ clang tests/hello_libc.cpp -o out/hello_libc -O3
-$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE -O3
+$ clang tests/hello_libc.cpp -o out/hello_libc -O3 -s
+$ clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -DBUILD_RELEASE -O3 -s
 ```
 ```
 $ ls -la out
--rwxrwxrwx 1 lin lin  16512 Mar 31 02:25 hello_libc
--rwxrwxrwx 1 lin lin 124928 Mar 31 02:25 hello_libc.exe
--rwxrwxrwx 1 lin lin   2544 Mar 31 02:25 hello_linux
--rwxrwxrwx 1 lin lin   3072 Mar 31 02:26 hello_win64.exe
--rwxrwxrwx 1 lin lin   3072 Mar 31 02:26 hello_win64_console.exe
+-rwxrwxrwx 1 lin lin  14392 Mar 31 14:19 hello_libc
+-rwxrwxrwx 1 lin lin 124928 Mar 31 14:19 hello_libc.exe
+-rwxrwxrwx 1 lin lin   1744 Mar 31 14:19 hello_linux
+-rwxrwxrwx 1 lin lin   3072 Mar 31 14:19 hello_win64.exe
+-rwxrwxrwx 1 lin lin   3072 Mar 31 14:19 hello_win64_console.exe
 ```
 
 ### debugger (windows)
@@ -121,15 +121,24 @@ $ perf stat out/hello_linux
 
 TODO: use someone else's driver?
 
-### asm
-u64 rax; u32 eax; u16 ax; u8 al;
+### nasm (linux)
+|architecture|registers by size   |registers for function call         |registers for syscall                |
+|------------|--------------------|------------------------------------|-------------------------------------|
+|x64         |al, ax, eax, rax    |rax = f(rdi, rsi, rdx, rcx, r8, r9) |rax = rax(rdi, rsi, rdx, r10, r8, r9)|
 
-prefixes:
+### gcc inline asm
+gcc inline asm is terrible and should never be used by anyone (except maybe for mfence)
+- it is very error prone
+- it produces larger binaries even with -O3
+
+asm clobber "memory" means don't reorder in compiler
+
+output prefixes:
 |write|read/write|early clobber|commutative pair|
 |-----|----------|-------------|----------------|
 |=    |+         |&            |%               |
 
-asm registers are undefined behavior if you dare to use "=rax" instead of "=a"
+asm inputs and outputs are undefined behavior if you dare to use "=rax" instead of "=a"
 
 `register u32 x asm ("a") = ...;` uses the same bs notation...
 
@@ -137,5 +146,3 @@ also this is architecture specific...
 |rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8-r15|any general register|
 |---|---|---|---|---|---|---|---|------|--------------------|
 |a  |b  |c  |d  |?  |?  |?  |?  |N/A   |r                   |
-
-asm clobber "memory" means don't reorder in compiler

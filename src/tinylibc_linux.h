@@ -38,6 +38,9 @@ internal u64 osNanoTime() {
 extern int main(int argc, char* argv[]);
 external void _start() {
     //crtInit();
+    // TODO:
+    // pop rdi     /* argc */
+    // mov rsi,rsp /* argv */
     int retCode = main(0, 0);
     //_DoExit();
     osExit(retCode);

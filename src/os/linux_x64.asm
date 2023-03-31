@@ -2,6 +2,7 @@
 
 section .text
 
+;      syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
 ; function call: rax = f(rdi, rsi, rdx, rcx, r8, r9)
 
 %macro _SYSCALL3 2
