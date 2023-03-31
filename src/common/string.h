@@ -24,27 +24,49 @@ internal String sprint(const char* msg) { // TODO: should this talloc()?
 }
 
 // unsigned int
-#define _sprintUnsigned(type, max_count) \
-    internal String sprint(u8* buffer, type number) { \
-        u8* curr = buffer + max_count; \
+#define _sprintUnsigned(BITS) \
+    internal String sprint(u8* buffer, u##BITS number) { \
+        u8* curr = buffer + U##BITS##_MAX_BASE10_DIGITS; \
         *curr = '\0'; \
         do { \
             *--curr = '0' + (number % 10); \
             number /= 10; \
         } while (number > 0); \
         uint offset = (uint)(curr - buffer); \
-        return String { buffer + offset, max_count - offset }; \
+        return String { buffer + offset, U##BITS##_MAX_BASE10_DIGITS - offset }; \
     } \
-    internal String sprint(type number) { \
-        String str = sprint((u8*)talloc(U64_MAX_BASE10_DIGITS+2), number); \
+    internal String sprint(u##BITS number) { \
+        String str = sprint((u8*)talloc(U##BITS##_MAX_BASE10_DIGITS+2), number); \
+        str.msg[str.count++] = '\n'; \
+        return str; \
+    }
+#define _sprintSigned(BITS) \
+    internal String sprintSigned(u8* buffer, s##BITS number) { \
+        String str; \
+        if (number >= 0) \
+            str = sprint(buffer+1, (u##BITS)number); \
+        else { \
+            str = sprint(buffer+1, (u##BITS)-number); \
+            *(--str.msg) = '-'; \
+            str.count++; \
+        } \
+        return str; \
+    } \
+    internal String sprintSigned(s##BITS number) { \
+        String str = sprintSigned((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+2), number); \
         str.msg[str.count++] = '\n'; \
         return str; \
     }
 
-_sprintUnsigned(u8, U8_MAX_BASE10_DIGITS)
-_sprintUnsigned(u16, U16_MAX_BASE10_DIGITS)
-_sprintUnsigned(u32, U32_MAX_BASE10_DIGITS)
-_sprintUnsigned(u64, U64_MAX_BASE10_DIGITS)
+_sprintUnsigned(8)
+_sprintUnsigned(16)
+_sprintUnsigned(32)
+_sprintUnsigned(64)
+
+_sprintSigned(8)
+_sprintSigned(16)
+_sprintSigned(32)
+_sprintSigned(64)
 
 // TODO: sprintSigned()
 
