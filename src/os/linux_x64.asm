@@ -5,24 +5,21 @@ section .text
 ;      syscall: rax = rax(rdi, rsi, rdx, r10, r8, r9)
 ; function call: rax = f(rdi, rsi, rdx, rcx, r8, r9)
 
-%macro _SYSCALL3 2
-    global %1
-    %1:
-        mov rax, %2
-        jmp __syscall3
-%endmacro
 %macro _SYSCALL6 2
     global %1
     %1:
         mov rax, %2
         jmp __syscall6
 %endmacro
+%macro _SYSCALL3 2
+    global %1
+    %1:
+        mov rax, %2
+        jmp __syscall3
+%endmacro
 
 _SYSCALL3 linuxWrite, 1
-global linuxExit
-linuxExit:
-    mov rax, 60
-    syscall
+_SYSCALL3 linuxExit, 60
 
 _SYSCALL6 linuxMmap, 9
 _SYSCALL3 linuxMunmap, 11
