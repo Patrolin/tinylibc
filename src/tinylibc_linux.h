@@ -10,11 +10,11 @@ internal void osExit(uint return_code) {
 internal void osPrint(const u8* msg, uint count) {
     linuxWrite(_STDOUT, msg, count);
 }
-
 internal void osPanic(const char* msg) {
     print(msg);
     osExit(1);
 }
+
 internal void* osPageAlloc(uint size) {
     void* ptr = linuxMmap(0, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
     _osPageAllocAssert(ptr);
