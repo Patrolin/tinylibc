@@ -4,6 +4,8 @@ struct ArenaAllocator {
     uint size = 0;
 
     void init(uint max_size) {
+        if (this->start != 0)
+            osPageFree(this->start, this->max_size);
         this->start = (u8*)osPageAlloc(max_size);
         this->max_size = max_size;
     }
@@ -17,7 +19,6 @@ struct ArenaAllocator {
     }
     void reset() {
         #ifndef BUILD_RELEASE
-            osPageFree(this->start, this->max_size);
             this->init(this->max_size);
         #endif
         this->size = 0;
