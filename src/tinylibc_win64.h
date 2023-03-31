@@ -28,11 +28,24 @@ struct WinInit {
     u64 query_performance_multiplier;
 };
 global WinInit _win_init = {};
+external LONG __stdcall _winDefaultFaultHandler(EXCEPTION_POINTERS* exception_info) {
+    switch (exception_info->ExceptionRecord->ExceptionCode) {
+        case EXCEPTION_ACCESS_VIOLATION:
+            osPanic("Error: Segmentation fault");
+        case EXCEPTION_INT_DIVIDE_BY_ZERO:
+            osPanic("Error: Integer divide by zero");
+        //case EXCEPTION_INT_OVERFLOW:
+            //osPanic("Error: Integer overflow"); // only happens for DIV instruction
+    }
+    return EXCEPTION_CONTINUE_SEARCH;
+}
 internal void _winInit() {
     // stdout
     _win_init.stdin = GetStdHandle(-10); // 0 if subsystem != console
     _win_init.stdout = GetStdHandle(-11);
     _win_init.stderr = GetStdHandle(-12);
+    // faults
+    AddVectoredExceptionHandler(1, _winDefaultFaultHandler);
     // time
     uint set_timer_resolution_error = timeBeginPeriod(1);
     // TODO: binary search to find actual granularity
@@ -67,8 +80,8 @@ internal void* osPageAlloc(uint size) {
     _osPageAllocAssert(ptr);
     return ptr;
 }
-internal void osPageFree(void* ptr) {
-    //VirtualFree(ptr); // TODO
+internal void osPageFree(void* ptr, uint size) {
+    VirtualFree(ptr, size, MEM_DECOMMIT|MEM_RELEASE);
 }
 
 internal void osSleep(u64 ms) {
@@ -83,7 +96,6 @@ internal u64 osNanoTime() {
     QueryPerformanceCounter(&time);
     return time.QuadPart * _win_init.query_performance_multiplier;
 }
-// TODO: exceptions: AddVectoredExceptionHandler(...) / HandlerRoutine(...)
 
 external int _start() {
     //crtInit();

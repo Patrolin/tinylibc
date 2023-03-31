@@ -16,6 +16,10 @@ struct ArenaAllocator {
         return data;
     }
     void reset() {
-        this->size = 0; // TODO: free and alloc for security?
+        #ifndef BUILD_RELEASE
+            osPageFree(this->start, this->max_size);
+            this->init(this->max_size);
+        #endif
+        this->size = 0;
     }
 };

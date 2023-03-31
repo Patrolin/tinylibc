@@ -16,10 +16,12 @@ internal void osPanic(const char* msg) {
     osExit(1);
 }
 internal void* osPageAlloc(uint size) {
-    // TODO: round up to PAGE_SIZE
     void* ptr = linuxMmap(0, size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
     _osPageAllocAssert(ptr);
     return ptr;
+}
+internal void osPageFree(void* ptr, uint size) {
+    linuxMunmap(ptr, size);
 }
 
 internal void osSleep(u64 ms) {

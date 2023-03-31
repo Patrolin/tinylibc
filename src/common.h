@@ -6,5 +6,5 @@
 #include "common/types/fixed.h"
 
 #include "common/time.h"
-#include "common/string.h"
 #include "common/alloc.h"
+#include "common/string.h"

@@ -23,9 +23,14 @@ internal void osPanic(const char* msg);
     assert((ptr != 0), "AllocError: ptr = 0\n"); \
     assert((((u64)ptr % PAGE_SIZE) == 0), "AllocError: ptr is not page aligned\n");
 
+// exceptions
+internal void segfault() {
+    *((volatile u8*)0) = 0;
+}
+
 // alloc
 internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero
-internal void osPageFree(void* ptr); // free pages allocated by osPageAlloc()
+internal void osPageFree(void* ptr, uint size); // free pages allocated by osPageAlloc()
 
 // time
 internal void osSleep(uint ms);
