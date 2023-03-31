@@ -68,8 +68,6 @@ _sprintSigned(16)
 _sprintSigned(32)
 _sprintSigned(64)
 
-// TODO: sprintSigned()
-
 // debug
 internal void debugPrint(u64 number) {
     u8 buffer[U64_MAX_BASE10_DIGITS+2];
@@ -95,7 +93,7 @@ internal String sprint(std::initializer_list<String> strings) {
 
 // generic print
 internal void print(int value) {
-    print(sprint((u32)value)); // TODO: sprintSigned()
+    print(sprintSigned(value));
 }
 template <typename T>
 internal void print(T value) {
