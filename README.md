@@ -66,6 +66,8 @@ $ gdb out/hello_linux
 ### disassemble (windows)
 Same as "debugger (windows)", but switch to "Disassembly" tab
 
+// TODO: check (return struct) vs (return + ptr) disassembly
+
 ### disassemble (linux)
 ```
 $ objdump -M intel -Dz out/hello_linux > out/hello_linux.asm
