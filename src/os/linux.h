@@ -38,4 +38,4 @@ external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int*
 external int nanosleep(const struct timespec *req, struct timespec *rem);
 // TODO: getcpu()?
 
-#define TIMER_RESOLUTION_MS 1
+#define TIMER_RESOLUTION_MS 1 // TODO: is this correct?

@@ -93,6 +93,9 @@ internal String sprint(std::initializer_list<String> strings) {
 internal void print(std::initializer_list<String> strings) {
     print(sprint(strings));
 }
+internal void printline(std::initializer_list<String> strings) {
+    print({sprint(strings), sprint("\n")});
+}
 
 // generic print
 template <typename T>
