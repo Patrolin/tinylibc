@@ -42,7 +42,7 @@ internal String sprint(const char* msg) { // TODO: should this talloc()?
         return str; \
     }
 #define _sprintSigned(BITS) \
-    internal String sprintSigned(u8* buffer, s##BITS number) { \
+    internal String sprint(u8* buffer, s##BITS number) { \
         String str; \
         if (number >= 0) \
             str = sprint(buffer+1, (u##BITS)number); \
@@ -53,8 +53,8 @@ internal String sprint(const char* msg) { // TODO: should this talloc()?
         } \
         return str; \
     } \
-    internal String sprintSigned(s##BITS number) { \
-        String str = sprintSigned((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+1), number); \
+    internal String sprint(s##BITS number) { \
+        String str = sprint((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+1), number); \
         return str; \
     }
 
@@ -102,14 +102,8 @@ template <typename T>
 internal void print(T value) {
     print(sprint(value));
 }
-internal void print(int value) {
-    print(sprintSigned(value));
-}
 
 template <typename T>
 internal void printline(T value) {
     print({sprint(value), sprint("\n")});
-}
-internal void printline(int value) {
-    print({sprintSigned(value), sprint("\n")});
 }
