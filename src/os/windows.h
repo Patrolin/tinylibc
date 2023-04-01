@@ -32,6 +32,8 @@ external LONG __stdcall _winDefaultFaultHandler(EXCEPTION_POINTERS* exception_in
             osPanic("Error: Integer divide by zero");
         //case EXCEPTION_INT_OVERFLOW:
             //osPanic("Error: Integer overflow"); // only happens for DIV instruction
+        //case EXCEPTION_STACK_OVERFLOW:
+            //osPanic("Error: Stack overflow");
     }
     return EXCEPTION_CONTINUE_SEARCH;
 }

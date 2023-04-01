@@ -90,6 +90,9 @@ internal String sprint(std::initializer_list<String> strings) {
     }
     return String{ msg, count };
 }
+internal void print(std::initializer_list<String> strings) {
+    print(sprint(strings));
+}
 
 // generic print
 internal void print(int value) {

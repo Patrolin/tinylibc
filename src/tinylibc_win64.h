@@ -48,6 +48,7 @@ internal u64 osNanoTime() {
 
 external int _start() {
     //crtInit();
+    _floatInit();
     _winInit();
     _tallocInit();
     // TODO: pass arguments
