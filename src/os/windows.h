@@ -20,7 +20,8 @@ struct WinInit {
     HANDLE stdout = 0;
     HANDLE stderr = 0;
     // time
-    u64 query_performance_multiplier;
+    uint timer_resolution = 0;
+    u64 query_performance_multiplier = 0;
 };
 global WinInit _win_init = {};
 
@@ -47,10 +48,18 @@ internal void _winInit() {
     AddVectoredExceptionHandler(1, _winDefaultFaultHandler);
     // time
     uint set_timer_resolution_error = timeBeginPeriod(1);
-    // TODO: binary search to find actual granularity
-    assert(set_timer_resolution_error == TIMERR_NOERROR, "InitError: Failed to set timer resolution");
+    uint timer_resolution = 1;
+    uint TIMER_RESOLUTION_MAX = 100;
+    while (timer_resolution <= TIMER_RESOLUTION_MAX) {
+        if (timeBeginPeriod(timer_resolution) == TIMERR_NOERROR) break;
+        timer_resolution++;
+    }
+    if (timer_resolution > TIMER_RESOLUTION_MAX) osPanic("InitError: Failed to set timer resolution");
+    _win_init.timer_resolution = timer_resolution;
     LARGE_INTEGER query_performance_ticks_per_second;
     assert(QueryPerformanceFrequency(&query_performance_ticks_per_second), "InitError: Failed to get QueryPerformanceFrequency");
     _win_init.query_performance_multiplier = nsSeconds(1) / query_performance_ticks_per_second.QuadPart;
     assert(_win_init.query_performance_multiplier != 0, "InitError: _win_init.query_performance_multiplier = 0");
 }
+
+#define TIMER_RESOLUTION_MS _win_init.timer_resolution

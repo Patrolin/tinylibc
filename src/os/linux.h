@@ -37,3 +37,5 @@ external int linuxMunmap(void* address, uint length);
 external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
 external int nanosleep(const struct timespec *req, struct timespec *rem);
 // TODO: getcpu()?
+
+#define TIMER_RESOLUTION_MS 1

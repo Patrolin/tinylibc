@@ -1,6 +1,8 @@
-// String sprint(T value)
 // String sprint(u8* buffer, T value)
-// void print(T value) = print(sprint(T))
+// String sprint(T value)
+// void print(T value);
+// void print(std::initializer_list<String> strings);
+// void printline(T value);
 
 // String
 struct String {
@@ -36,8 +38,7 @@ internal String sprint(const char* msg) { // TODO: should this talloc()?
         return String { buffer + offset, U##BITS##_MAX_BASE10_DIGITS - offset }; \
     } \
     internal String sprint(u##BITS number) { \
-        String str = sprint((u8*)talloc(U##BITS##_MAX_BASE10_DIGITS+2), number); \
-        str.msg[str.count++] = '\n'; \
+        String str = sprint((u8*)talloc(U##BITS##_MAX_BASE10_DIGITS+1), number); \
         return str; \
     }
 #define _sprintSigned(BITS) \
@@ -53,8 +54,7 @@ internal String sprint(const char* msg) { // TODO: should this talloc()?
         return str; \
     } \
     internal String sprintSigned(s##BITS number) { \
-        String str = sprintSigned((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+2), number); \
-        str.msg[str.count++] = '\n'; \
+        String str = sprintSigned((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+1), number); \
         return str; \
     }
 
@@ -95,10 +95,18 @@ internal void print(std::initializer_list<String> strings) {
 }
 
 // generic print
-internal void print(int value) {
-    print(sprintSigned(value));
-}
 template <typename T>
 internal void print(T value) {
     print(sprint(value));
+}
+internal void print(int value) {
+    print(sprintSigned(value));
+}
+
+template <typename T>
+internal void printline(T value) {
+    print({sprint(value), sprint("\n")});
+}
+internal void printline(int value) {
+    print({sprintSigned(value), sprint("\n")});
 }
