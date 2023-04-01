@@ -47,7 +47,6 @@ internal void _winInit() {
     // faults
     AddVectoredExceptionHandler(1, _winDefaultFaultHandler);
     // time
-    uint set_timer_resolution_error = timeBeginPeriod(1);
     uint timer_resolution = 1;
     uint TIMER_RESOLUTION_MAX = 100;
     while (timer_resolution <= TIMER_RESOLUTION_MAX) {
@@ -56,6 +55,7 @@ internal void _winInit() {
     }
     if (timer_resolution > TIMER_RESOLUTION_MAX) osPanic("InitError: Failed to set timer resolution");
     _win_init.timer_resolution = timer_resolution;
+
     LARGE_INTEGER query_performance_ticks_per_second;
     assert(QueryPerformanceFrequency(&query_performance_ticks_per_second), "InitError: Failed to get QueryPerformanceFrequency");
     _win_init.query_performance_multiplier = nsSeconds(1) / query_performance_ticks_per_second.QuadPart;
