@@ -24,6 +24,9 @@ internal uint cstrCount(const char* start) {
 internal String sprint(const char* msg) { // TODO: should this talloc()?
     return String{ (u8*)msg, cstrCount(msg) };
 }
+internal void print(const char* msg) {
+    print(sprint(msg));
+}
 
 // unsigned int
 #define _sprintUnsigned(BITS) \
@@ -97,13 +100,41 @@ internal void printline(std::initializer_list<String> strings) {
     print({sprint(strings), sprint("\n")});
 }
 
+// float
+internal String sprint(f64 number) {
+    u8 buffer[F64_MAX_BASE10_DIGITS+4];
+    buffer[F64_MAX_BASE10_DIGITS] = 0;
+    u8* curr = buffer;
+    sint base10_exponent = (sint)log10(number);
+    f64 fraction = frexp(number).fraction;
+    if (fraction < 0.0) {
+        *(curr++) = '-';
+        fraction *= -1.0;
+    }
+    fraction -= 1.0;
+    *(curr++) = '1';
+    *(curr++) = '.';
+    for (uint i = 0; i < F64_MAX_BASE10_DIGITS; i++) {
+        u8 int_fraction = (u8)fraction;
+        //printline({sprint("f: "), sprint(int_fraction)});
+        *(curr++) = '0' + int_fraction;
+        fraction -= int_fraction;
+        fraction *= 10.0;
+        if (fraction == 0.0) break;
+    }
+    *curr = 0;
+    return sprint({String{ buffer, (uint)(curr-buffer) }, sprint("e"), sprint(base10_exponent)});
+}
+
 // generic print
 template <typename T>
 internal void print(T value) {
     print(sprint(value));
 }
-
 template <typename T>
 internal void printline(T value) {
     print({sprint(value), sprint("\n")});
+}
+internal void printline(String value) {
+    print({value, sprint("\n")});
 }

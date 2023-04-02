@@ -29,8 +29,11 @@
 
 int main(int argc, char* argv[]) {
     print("Hello world\n");
-    print(123);
-    print(sprintSigned(-123));
-    print(sprint({sprint("Abc "), sprint("Xyz\n")}));
+    printline(123);
+    printline(-123);
+    printline(10.5);
+    printline(1.0);
+    printline(0.09);
+    printline(0.1);
     return 0;
 }

@@ -14,11 +14,6 @@ internal void osPrint(const u8* msg, uint count);
 
 // assert
 internal void osPanic(const char* msg);
-#ifdef BUILD_RELEASE
-    #define assert(condition, msg)
-#else
-    #define assert(condition, msg) if (!(condition)) osPanic(msg);
-#endif
 #define _osPageAllocAssert(ptr) \
     assert((ptr != 0), "AllocError: ptr = 0\n"); \
     assert((((u64)ptr % PAGE_SIZE) == 0), "AllocError: ptr is not page aligned\n");

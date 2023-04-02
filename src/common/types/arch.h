@@ -31,9 +31,8 @@
     // #include <immintrin.h>
     unsigned int _mm_getcsr(void);
     void _mm_setcsr(unsigned int __i);
-    #define _MM_FLUSH_ZERO_ON     (0x8000U)
-    #define _MM_FLUSH_ZERO_OFF    (0x0000U)
-    #define _MM_SET_FLUSH_ZERO_MODE(x) (_mm_setcsr((_mm_getcsr() & ~_MM_FLUSH_ZERO_ON) | (x)))
+    #define _MM_FLUSH_ZERO 0x8000U
+    #define _MM_DENORMALS_ARE_ZERO 0x0040
 #elif defined(__i386__)
     #define ARCH_X86 1
     #define BITS_32 1
@@ -56,9 +55,15 @@
 #endif
 
 // _floatInit
+internal void print(const char* msg);
+template <typename T>
+internal void printline(T value);
 internal void _floatInit() {
     #if defined(ARCH_X64) || defined(ARCH_X86)
-        _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
+        auto xmmFlags = _mm_getcsr();
+        _mm_setcsr(xmmFlags | _MM_FLUSH_ZERO | _MM_DENORMALS_ARE_ZERO);
+        xmmFlags = _mm_getcsr();
+        assert((xmmFlags&_MM_FLUSH_ZERO) && (xmmFlags&_MM_DENORMALS_ARE_ZERO), "InitError: Failed to set xmmFlags");
     #else
         static_assert(false, "Unsupported architecture");
     #endif

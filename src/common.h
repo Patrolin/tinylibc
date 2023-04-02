@@ -1,3 +1,10 @@
+static void osPanic(const char *msg);
+#ifdef BUILD_RELEASE
+    #define assert(condition, msg)
+#else
+    #define assert(condition, msg) if (!(condition)) osPanic(msg);
+#endif
+
 #include "common/types/int.h"
 #include "common/types/float.h"
 #include "common/types/arch.h"
