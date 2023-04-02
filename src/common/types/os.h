@@ -28,8 +28,8 @@ internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and c
 internal void osPageFree(void* ptr, uint size); // free pages allocated by osPageAlloc()
 
 // time
-internal void osSleep(uint ms);
-internal void osNanosleep(uint ms);
+internal void osSleep(uint ms); // sleep for atleast ms milliseconds
+internal void osNanosleep(uint ns); // sleep for atleast ns nanoseconds
 internal u64 osNanoTime();
 // TODO: internal u64 osDateTime();
 

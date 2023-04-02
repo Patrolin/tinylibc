@@ -33,17 +33,17 @@ internal void osPageFree(void* ptr, uint size) {
     VirtualFree(ptr, size, MEM_DECOMMIT|MEM_RELEASE);
 }
 
-internal void osSleep(u64 ms) {
-    Sleep(ms);
-}
-internal void osNanosleep(u64 ms) {
-    assert(false, "TODO");
-}
 // TODO: GetSystemTime()?
 internal u64 osNanoTime() {
     LARGE_INTEGER time;
     QueryPerformanceCounter(&time);
     return time.QuadPart * _win_init.query_performance_multiplier;
+}
+internal void osSleep(u64 ms) {
+    Sleep(ms);
+}
+internal void osNanosleep(u64 ms) {
+    assert(false, "TODO");
 }
 
 external int _start() {

@@ -24,19 +24,19 @@ internal void osPageFree(void* ptr, uint size) {
     linuxMunmap(ptr, size);
 }
 
+internal u64 osNanoTime() {
+    assert(false, "TODO");
+    return 0;
+};
 internal void osSleep(u64 ms) {
     assert(false, "TODO");
     //linuxSleep(ms);
 }
 internal void osNanosleep(u64 ms) {
     assert(false, "TODO");
+    //timespec req = {  };
     //linuxNanosleep(ms);
 }
-internal u64 osNanoTime() {
-    assert(false, "TODO");
-    return 0;
-};
-// TODO: exceptions: ??
 
 extern int main(int argc, char* argv[]);
 external void _start() {

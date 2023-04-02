@@ -24,6 +24,7 @@ external sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDIN 0
 #define _STDOUT 1
 #define _STDERR 2
+
 external void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset);
 #define PROT_READ 0x1
 #define PROT_WRITE 0x2
@@ -33,9 +34,13 @@ external void* linuxMmap(void* address, uint size, int protection, int flags, in
 #define MAP_SHARED_VALIDATE 0x03
 #define MAP_ANONYMOUS 0x20
 #define MAP_STACK 0x20000
+
+//external int linuxTime(...);
+external int linuxNanosleep(const struct timespec *req, struct timespec *rem);
+
 external int linuxMunmap(void* address, uint length);
 external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int* child_tid, unsigned long tls);
-external int nanosleep(const struct timespec *req, struct timespec *rem);
+
 // TODO: getcpu()?
 
 #define TIMER_RESOLUTION_MS 1 // TODO: is this correct?

@@ -31,9 +31,12 @@ int main(int argc, char* argv[]) {
     print("Hello world\n");
     printline(123);
     printline(-123);
-    printline(10.5);
-    printline(1.0);
-    printline(0.09);
-    printline(0.1);
+    //printline(10.5);
+    //printline(1.0);
+    //printline(0.09);
+    //printline(0.1);
+    debugPrint(((f64u64)(1.0)).u64);
+    debugPrint(((f64u64)(0.5)).u64);
+    debugPrint(((f64u64)mod(1.5, 1.0)).u64);
     return 0;
 }
