@@ -7,11 +7,13 @@ static_assert(sizeof(f64) == 8, "");
 #define F32_SIGNIFICAND_MASK ((u32)-1 >> (32 - F32_SIGNIFICAND_BITS))
 #define F32_EXPONENT_MASK ((u32)0xff << F32_SIGNIFICAND_BITS)
 #define F32_EXPONENT_BIAS ((s32)127)
+#define F32_SIGN_MASK ((u32)1 << 31)
 #define F32_MAX_BASE10_DIGITS 8
 
 #define F64_SIGNIFICAND_BITS ((u64)52)
 #define F64_SIGNIFICAND_MASK ((u64)-1 >> (64 - F64_SIGNIFICAND_BITS))
 #define F64_EXPONENT_MASK ((u64)0x7ff << F64_SIGNIFICAND_BITS)
+#define F64_SIGN_MASK ((u64)1 << 63)
 #define F64_EXPONENT_BIAS ((s64)1023)
 #define F64_MAX_BASE10_DIGITS 16
 
@@ -37,6 +39,11 @@ static_assert(sizeof(f64) == 8, "");
         union_.u##BITS = (int_value & ~F##BITS##_EXPONENT_MASK) | (F##BITS##_EXPONENT_BIAS << F##BITS##_SIGNIFICAND_BITS); \
         return Frexp##BITS{ union_.f##BITS, exponent }; \
     } \
+    Frexp##BITS frexp_10(f##BITS value) { \
+        Frexp##BITS fe = frexp(value); \
+        /* TODO: convert to base 10 */ \
+        return fe; \
+    } \
     f##BITS buildF##BITS(Frexp##BITS frexp) { \
         f##BITS##u##BITS union_ = (f##BITS##u##BITS)frexp.fraction; \
         union_.u##BITS = (union_.u##BITS & ~F##BITS##_EXPONENT_MASK) | ((frexp.exponent + F##BITS##_EXPONENT_BIAS) << F##BITS##_SIGNIFICAND_BITS); \
@@ -50,6 +57,7 @@ static_assert(sizeof(f64) == 8, "");
     f##BITS log10(f##BITS x) { \
         return log2(x) * _LOG2_10_INV; \
     } \
+    /* TODO: pow, exp? */ \
     struct FloorDiv##BITS { \
         s##BITS quotient; \
         f##BITS remainder; \

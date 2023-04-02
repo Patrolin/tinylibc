@@ -101,23 +101,27 @@ internal void printline(std::initializer_list<String> strings) {
 }
 
 // float
+// TODO: f32 version
 internal String sprint(f64 number) {
     // TODO: more accurate version
     u8 buffer[F64_MAX_BASE10_DIGITS+4];
     buffer[F64_MAX_BASE10_DIGITS] = 0;
     u8* curr = buffer;
-    sint base10_exponent = (sint)log10(number);
+    sint base10_exponent = (sint)(log10(number) - 1.0);
     f64 fraction = frexp(number).fraction;
     if (fraction < 0.0) {
         *(curr++) = '-';
         fraction *= -1.0;
     }
     fraction -= 1.0;
-    *(curr++) = '1';
+    printline({sprint("aaa:"), sprint(((f64u64)fraction).u64)});
+    u8 int_fraction = (u8)fraction;
+    *(curr++) = '0' + int_fraction;
+    fraction -= int_fraction;
+    fraction *= 10.0;
     *(curr++) = '.';
     for (uint i = 0; i < F64_MAX_BASE10_DIGITS; i++) {
         u8 int_fraction = (u8)fraction;
-        //printline({sprint("f: "), sprint(int_fraction)});
         *(curr++) = '0' + int_fraction;
         fraction -= int_fraction;
         fraction *= 10.0;

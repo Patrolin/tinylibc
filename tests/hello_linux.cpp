@@ -36,7 +36,10 @@ int main(int argc, char* argv[]) {
     //printline(0.09);
     //printline(0.1);
     debugPrint(((f64u64)(1.0)).u64);
+    printline(1.0);
     debugPrint(((f64u64)(0.5)).u64);
+    printline(0.5);
+    printline(0.1);
     debugPrint(((f64u64)mod(1.5, 1.0)).u64);
     return 0;
 }
