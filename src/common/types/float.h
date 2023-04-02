@@ -51,11 +51,11 @@ static_assert(sizeof(f64) == 8, "");
         return log2(x) * _LOG2_10_INV; \
     } \
     struct FloorDiv##BITS { \
-        u##BITS quotient; \
+        s##BITS quotient; \
         f##BITS remainder; \
     }; \
     FloorDiv##BITS floorDiv(f##BITS a, f##BITS b) { \
-        u##BITS quotient = (u##BITS)(a / b); \
+        s##BITS quotient = (s##BITS)(a / b); \
         f##BITS remainder = a - (quotient*b); \
         return FloorDiv##BITS{ quotient, remainder }; \
     } \
