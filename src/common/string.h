@@ -107,8 +107,8 @@ internal String sprint(f64 number) {
     u8 buffer[F64_MAX_BASE10_DIGITS+4];
     buffer[F64_MAX_BASE10_DIGITS] = 0;
     u8* curr = buffer;
-    sint base10_exponent = (sint)(log10(number) - 1.0);
-    f64 fraction = frexp(number).fraction;
+    Frexp64 fe = frexp_10(number);
+    f64 fraction = fe.fraction;
     if (fraction < 0.0) {
         *(curr++) = '-';
         fraction *= -1.0;
@@ -128,7 +128,7 @@ internal String sprint(f64 number) {
         if (fraction == 0.0) break;
     }
     *curr = 0;
-    return sprint({String{ buffer, (uint)(curr-buffer) }, sprint("e"), sprint(base10_exponent)});
+    return sprint({String{ buffer, (uint)(curr-buffer) }, sprint("e"), sprint(fe.exponent)});
 }
 
 // generic print
