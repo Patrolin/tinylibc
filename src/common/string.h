@@ -102,6 +102,7 @@ internal void printline(std::initializer_list<String> strings) {
 
 // float
 internal String sprint(f64 number) {
+    // TODO: more accurate version
     u8 buffer[F64_MAX_BASE10_DIGITS+4];
     buffer[F64_MAX_BASE10_DIGITS] = 0;
     u8* curr = buffer;
