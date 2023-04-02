@@ -76,9 +76,3 @@ static_assert(sizeof(f64) == 8, "");
 
 _floatFunctions(32, float)
 _floatFunctions(64, double)
-
-void f() {
-    float x = 1.;
-    int y = 3;
-    float z = x*y;
-}
