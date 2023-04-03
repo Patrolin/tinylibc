@@ -31,15 +31,16 @@ int main(int argc, char* argv[]) {
     print("Hello world\n");
     printline(123);
     printline(-123);
-    //printline(10.5);
-    //printline(1.0);
-    //printline(0.09);
-    //printline(0.1);
-    debugPrint(((f64u64)(1.0)).u64);
-    printline(1.0);
-    debugPrint(((f64u64)(0.5)).u64);
-    printline(0.5);
-    printline(0.1);
-    debugPrint(((f64u64)mod(1.5, 1.0)).u64);
+    debugPrint(f32u32(1.0f).u32);
+    debugPrint(f32u32(round(0.5)).u32);
+    debugPrint(f32u32(0.5f).u32);
+    debugPrint(f32u32(mod(1.5, 1.0)).u32);
+    //printline(10.5f);
+    //printline(1.0f);
+    //printline(0.09f);
+    //printline(0.1f);
+    printline(1.0f);
+    //printline(0.5f);
+    //printline(0.1f);
     return 0;
 }

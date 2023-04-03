@@ -1,22 +1,3 @@
-// constants
-#define STRINGIFY_(x) #x
-#define STRINGIFY(x) STRINGIFY_(x)
-
-#define externalCpp extern "C++" // link with other translation units with (C++) name mangling (default)
-#define external extern "C" // link with other translation units without (C++) name mangling
-#define internal static // don't link with other translation units (allows compiler to discard unused functions)
-#define global static // global variable
-
-#define arrayCount(Array) (sizeof(Array) / sizeof((Array)[0]))
-#define kiloBytes(n) ((uint)n*1024)
-#define megaBytes(n) (kiloBytes(n)*1024)
-#define gigaBytes(n) (megaBytes(n)*1024)
-
-// mfence
-#define _lfence asm volatile ("lfence" ::: "memory")
-#define _sfence asm volatile ("sfence" ::: "memory")
-#define _mfence asm volatile ("mfence" ::: "memory")
-
 // we want: #define BITS_64 (sizeof(void*) == 8)
 // but C++ is stupid and doesn't allow sizeof(), constexpr or defined() in #define
 
@@ -29,7 +10,7 @@
     #define HUGE_PAGE_SIZE_MIN megaBytes(2)
     #define HUGE_PAGE_SIZE_MAX gigaBytes(1)
     // #include <immintrin.h>
-    unsigned int _mm_getcsr(void);
+    unsigned int _mm_getcsr(void) noexcept;
     void _mm_setcsr(unsigned int __i);
     #define _MM_FLUSH_ZERO 0x8000U
     #define _MM_DENORMALS_ARE_ZERO 0x0040

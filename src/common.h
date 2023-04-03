@@ -5,6 +5,7 @@ static void osPanic(const char *msg);
     #define assert(condition, msg) if (!(condition)) osPanic(msg);
 #endif
 
+#include "common/types/common.h"
 #include "common/types/int.h"
 #include "common/types/float.h"
 #include "common/types/arch.h"

@@ -12,7 +12,7 @@ void _tallocInit() {
     _talloc.init(PAGE_SIZE); // TODO: how much to initialize?
 }
 internal void* talloc(uint size) {
-    return _talloc.alloc(size);
+    return alloc(size);
 }
 internal void tallocReset() {
     _talloc.reset();

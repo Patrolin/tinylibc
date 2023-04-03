@@ -38,7 +38,10 @@ internal void print(const char* msg) {
             number /= 10; \
         } while (number > 0); \
         uint offset = (uint)(curr - buffer); \
-        return String { buffer + offset, U##BITS##_MAX_BASE10_DIGITS - offset }; \
+        uint count = U##BITS##_MAX_BASE10_DIGITS - offset; \
+        for (uint i = 0; i < count; i++) \
+            *(buffer + i) = *(curr + i); \
+        return String { buffer, count }; \
     } \
     internal String sprint(u##BITS number) { \
         String str = sprint((u8*)talloc(U##BITS##_MAX_BASE10_DIGITS+1), number); \
@@ -101,34 +104,38 @@ internal void printline(std::initializer_list<String> strings) {
 }
 
 // float
-// TODO: f32 version
-internal String sprint(f64 number) {
+internal String sprint(u8* buffer, f32 number) {
     // TODO: more accurate version
-    u8 buffer[F64_MAX_BASE10_DIGITS+4];
-    buffer[F64_MAX_BASE10_DIGITS] = 0;
     u8* curr = buffer;
-    Frexp64 fe = frexp_10(number);
-    f64 fraction = fe.fraction;
+    Frexp32 fe = frexp_10(number);
+    f32 fraction = fe.fraction;
     if (fraction < 0.0) {
         *(curr++) = '-';
         fraction *= -1.0;
     }
     fraction -= 1.0;
-    printline({sprint("aaa:"), sprint(((f64u64)fraction).u64)});
+    debugPrint(f32u32(fraction).u32);
+    //debugPrint(((f32u32)fraction).u32); // why does this segfault on -O1 :C
     u8 int_fraction = (u8)fraction;
     *(curr++) = '0' + int_fraction;
     fraction -= int_fraction;
     fraction *= 10.0;
     *(curr++) = '.';
-    for (uint i = 0; i < F64_MAX_BASE10_DIGITS; i++) {
+    for (uint i = 0; i < F32_MAX_FRACTION_DIGITS; i++) {
         u8 int_fraction = (u8)fraction;
         *(curr++) = '0' + int_fraction;
         fraction -= int_fraction;
         fraction *= 10.0;
         if (fraction == 0.0) break;
     }
-    *curr = 0;
-    return sprint({String{ buffer, (uint)(curr-buffer) }, sprint("e"), sprint(fe.exponent)});
+    *(curr++) = 'e';
+    String exponent_string = sprint(curr, fe.exponent);
+    curr += exponent_string.count + 1;
+    return String{ buffer, (uint)(curr-buffer) };
+}
+internal String sprint(f32 number) {
+    u8* buffer = (u8*)talloc(3 + F32_MAX_FRACTION_DIGITS + 1 + F32_MAX_EXPONENT_DIGITS);
+    return sprint(buffer, number);
 }
 
 // generic print

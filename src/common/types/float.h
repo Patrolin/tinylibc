@@ -8,71 +8,80 @@ static_assert(sizeof(f64) == 8, "");
 #define F32_EXPONENT_MASK ((u32)0xff << F32_SIGNIFICAND_BITS)
 #define F32_EXPONENT_BIAS ((s32)127)
 #define F32_SIGN_MASK ((u32)1 << 31)
-#define F32_MAX_BASE10_DIGITS 8
+#define F32_MAX_FRACTION_DIGITS 8
+#define F32_MAX_EXPONENT_DIGITS 2
 
-#define F64_SIGNIFICAND_BITS ((u64)52)
-#define F64_SIGNIFICAND_MASK ((u64)-1 >> (64 - F64_SIGNIFICAND_BITS))
-#define F64_EXPONENT_MASK ((u64)0x7ff << F64_SIGNIFICAND_BITS)
-#define F64_SIGN_MASK ((u64)1 << 63)
-#define F64_EXPONENT_BIAS ((s64)1023)
-#define F64_MAX_BASE10_DIGITS 16
+#define F32_EPSILON 1.1920928955078125e-7f // 2**-F32_SIGNIFICAND_BITS
+#define F32_ROUND_LOW_TO_INT (1.5f/F32_EPSILON)
+
+struct FloorDiv32 {
+    s32 quotient;
+    f32 remainder;
+};
+// return floorTowardsNegativeInfinity(a/b), remainder
+FloorDiv32 floorDiv(f32 a, f32 b) {
+    s32 quotient = (s32)(a / b);
+    f32 remainder = a - (quotient*b);
+    return FloorDiv32{ quotient, remainder };
+}
+f32 mod(f32 a, f32 b) {
+    return floorDiv(a, b).remainder;
+}
+f32 rem(f32 a, f32 b) {
+    return mod(a, b) - (b < 0)*b;
+}
+s32 floor(f32 number) {
+    //return floorDiv(number, 1.0f).quotient;
+    return (s32)number;
+}
+f32 round(f32 number) {
+    auto floor_div = floorDiv(number, 1.0f);
+    return floor_div.quotient + (floor_div.remainder >= 0.5f);
+}
+f32 ceil(f32 number) {
+    auto floor_div = floorDiv(number, 1.0f);
+    return floor_div.quotient + (floor_div.remainder > 0.0f);
+}
+#define _roundLow(number) (number + F32_ROUND_LOW_TO_INT - F32_ROUND_LOW_TO_INT) // works for 0 <= x < 1000
 
 #define _LOG2_10_INV 0.30102999566398119
 
-#define _floatFunctions(BITS, ctype) \
-    union f##BITS##u##BITS { \
-        f##BITS f##BITS; \
-        u##BITS u##BITS; \
-        f##BITS##u##BITS() {} \
-        f##BITS##u##BITS(ctype value) { \
-            this->f##BITS = value; \
-        } \
-    }; \
-    struct Frexp##BITS { \
-        f##BITS fraction; \
-        s##BITS exponent; \
-    }; \
-    Frexp##BITS frexp(f##BITS value) { \
-        f##BITS##u##BITS union_ = (f##BITS##u##BITS)value; \
-        u##BITS int_value = union_.u##BITS; \
-        s##BITS exponent = (s##BITS)((int_value & F##BITS##_EXPONENT_MASK) >> F##BITS##_SIGNIFICAND_BITS) - F##BITS##_EXPONENT_BIAS; \
-        union_.u##BITS = (int_value & ~F##BITS##_EXPONENT_MASK) | (F##BITS##_EXPONENT_BIAS << F##BITS##_SIGNIFICAND_BITS); \
-        return Frexp##BITS{ union_.f##BITS, exponent }; \
-    } \
-    Frexp##BITS frexp_10(f##BITS value) { \
-        Frexp##BITS fe = frexp(value); \
-        /* TODO: convert to base 10 */ \
-        return fe; \
-    } \
-    f##BITS buildF##BITS(Frexp##BITS frexp) { \
-        f##BITS##u##BITS union_ = (f##BITS##u##BITS)frexp.fraction; \
-        union_.u##BITS = (union_.u##BITS & ~F##BITS##_EXPONENT_MASK) | ((frexp.exponent + F##BITS##_EXPONENT_BIAS) << F##BITS##_SIGNIFICAND_BITS); \
-        return union_.f##BITS; \
-    } \
-    f##BITS log2(f##BITS x) { \
-        Frexp##BITS fe = frexp(x); \
-        f##BITS fraction_part = (fe.fraction - 0.998765) / (0.300157 * fe.fraction + 0.405561); \
-        return fraction_part + (f##BITS)fe.exponent; \
-    } \
-    f##BITS log10(f##BITS x) { \
-        return log2(x) * _LOG2_10_INV; \
-    } \
-    /* TODO: pow, exp? */ \
-    struct FloorDiv##BITS { \
-        s##BITS quotient; \
-        f##BITS remainder; \
-    }; \
-    FloorDiv##BITS floorDiv(f##BITS a, f##BITS b) { \
-        s##BITS quotient = (s##BITS)(a / b); \
-        f##BITS remainder = a - (quotient*b); \
-        return FloorDiv##BITS{ quotient, remainder }; \
-    } \
-    f##BITS mod(f##BITS a, f##BITS b) { \
-        return floorDiv(a, b).remainder; \
-    } \
-    f##BITS rem(f##BITS a, f##BITS b) { \
-        return mod(a, b) - (b < 0)*b; \
-    }
-
-_floatFunctions(32, float)
-_floatFunctions(64, double)
+union _f32u32 {
+    f32 f32;
+    u32 u32;
+};
+internal _f32u32 f32u32(f32 number) {
+    _f32u32 uni;
+    uni.f32 = number;
+    return uni;
+}
+struct Frexp32 {
+    f32 fraction;
+    s32 exponent;
+};
+internal Frexp32 frexp(f32 value) {
+    _f32u32 uni = f32u32(value);
+    u32 int_value = uni.u32;
+    s32 exponent = (s32)((int_value & F32_EXPONENT_MASK) >> F32_SIGNIFICAND_BITS) - F32_EXPONENT_BIAS;
+    uni.u32 = (int_value & ~F32_EXPONENT_MASK) | (F32_EXPONENT_BIAS << F32_SIGNIFICAND_BITS);
+    return Frexp32{ uni.f32, exponent };
+}
+internal Frexp32 frexp_10(f32 value) {
+    Frexp32 fe = frexp(value);
+    /* TODO: convert to base 10 */
+    return fe;
+}
+internal f32 buildF32(Frexp32 frexp) {
+    _f32u32 uni = f32u32(frexp.fraction);
+    uni.u32 = (uni.u32 & ~F32_EXPONENT_MASK) | ((frexp.exponent + F32_EXPONENT_BIAS) << F32_SIGNIFICAND_BITS);
+    return uni.f32;
+}
+internal f32 log2(f32 x) {
+    Frexp32 fe = frexp(x);
+    f32 fraction_part = (fe.fraction - 0.998765) / (0.300157 * fe.fraction + 0.405561);
+    return fraction_part + (f32)fe.exponent;
+}
+internal f32 log10(f32 x) {
+    return log2(x) * _LOG2_10_INV;
+}
+/* TODO: pow, exp? */
