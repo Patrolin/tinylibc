@@ -9,6 +9,7 @@
     #define ENDIAN_LSB_FIRST 1
     #define HUGE_PAGE_SIZE_MIN megaBytes(2)
     #define HUGE_PAGE_SIZE_MAX gigaBytes(1)
+    // Get SSE/AVX support: cat /proc/cpuinfo | grep -e sse -e avx
     // #include <immintrin.h>
     unsigned int _mm_getcsr(void) noexcept;
     void _mm_setcsr(unsigned int __i);
