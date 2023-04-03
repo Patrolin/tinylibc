@@ -19,3 +19,6 @@ internal fixed32 operator/(const fixed32& left, const fixed32& right) {
 }
 
 // TODO: print fixed32
+
+// TODO: fixed64?
+// TODO: sub to f32?
