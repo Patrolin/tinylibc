@@ -1,3 +1,4 @@
+#define MIN_ALIGN 16 // x64 calling convention
 struct OsAllocatorBlock {
     uint size;
 };

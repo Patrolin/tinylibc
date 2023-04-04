@@ -90,6 +90,7 @@ internal String sprint(std::initializer_list<String> strings) {
         count += str->count;
     u8* msg = (u8*)talloc(count);
     u8* buffer = msg;
+    // TODO: just calculate offset ahead of time
     for (auto str = strings.begin(); str != strings.end(); str++) {
         for (uint j = 0; j < str->count; j++)
             *(buffer++) = str->msg[j];
