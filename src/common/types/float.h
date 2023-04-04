@@ -66,10 +66,13 @@ internal Frexp32 frexp(f32 value) {
     uni.u32 = (int_value & ~F32_EXPONENT_MASK) | (F32_EXPONENT_BIAS << F32_SIGNIFICAND_BITS);
     return Frexp32{ uni.f32, exponent };
 }
+internal f32 log10(f32 x);
 internal Frexp32 frexp_10(f32 value) {
-    Frexp32 fe = frexp(value);
-    /* TODO: convert to base 10 */
-    return fe;
+    f32 exponent_10 = log10(value);
+    s32 floor_exponent_10 = floor(exponent_10);
+    //f32 fraction = pow(10, exponent_10 - floor_exponent_10);
+    f32 fraction = 1.0f;
+    return Frexp32{ fraction, floor_exponent_10 };
 }
 internal f32 buildF32(Frexp32 frexp) {
     _f32u32 uni = f32u32(frexp.fraction);

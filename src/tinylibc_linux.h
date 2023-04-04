@@ -41,6 +41,7 @@ internal void osNanosleep(u64 ms) {
 extern int main(int argc, char* argv[]);
 external void _start() {
     //crtInit();
+    _linuxInit();
     _tallocInit();
     _floatInit();
     // TODO:

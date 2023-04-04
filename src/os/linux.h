@@ -26,6 +26,14 @@ external sint linuxWrite(int file, const u8* msg, uint count);
 #define _STDERR 2
 
 external void* linuxMmap(void* address, uint size, int protection, int flags, int fd, sint offset);
+external int linuxBrk(void *addr);
+external uint __bss_start;
+void linuxSbrk(uint nbytes) {
+    char* stack_end = (char*)(uint)linuxBrk(0);
+    stack_end += nbytes;
+    char* new_stack_end = (char*)(uint)linuxBrk((void*)stack_end);
+    assert(new_stack_end == stack_end, "Failed to brk");
+}
 #define PROT_READ 0x1
 #define PROT_WRITE 0x2
 #define PROT_EXECUTE 0x4
@@ -44,3 +52,7 @@ external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int*
 // TODO: getcpu()?
 
 #define TIMER_RESOLUTION_MS 1 // TODO: is this correct?
+
+void _linuxInit() {
+    linuxSbrk(megaBytes(1));
+}

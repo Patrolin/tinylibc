@@ -109,24 +109,22 @@ internal String sprint(u8* buffer, f32 number) {
     u8* curr = buffer;
     Frexp32 fe = frexp_10(number);
     f32 fraction = fe.fraction;
-    if (fraction < 0.0) {
+    if (fraction < 0.0f) {
         *(curr++) = '-';
-        fraction *= -1.0;
+        fraction *= -1.0f;
     }
-    fraction -= 1.0;
-    debugPrint(f32u32(fraction).u32);
-    //debugPrint(((f32u32)fraction).u32); // why does this segfault on -O1 :C
+    //debugPrint(f32u32(fraction).u32); // why does this segfault on linux -O1 :C
     u8 int_fraction = (u8)fraction;
     *(curr++) = '0' + int_fraction;
     fraction -= int_fraction;
-    fraction *= 10.0;
+    fraction *= 10.0f;
     *(curr++) = '.';
     for (uint i = 0; i < F32_MAX_FRACTION_DIGITS; i++) {
         u8 int_fraction = (u8)fraction;
         *(curr++) = '0' + int_fraction;
         fraction -= int_fraction;
-        fraction *= 10.0;
-        if (fraction == 0.0) break;
+        fraction *= 10.0f;
+        if (fraction == 0.0f) break;
     }
     *(curr++) = 'e';
     String exponent_string = sprint(curr, fe.exponent);

@@ -23,6 +23,7 @@ _SYSCALL3 linuxExit, 60
 
 _SYSCALL6 linuxMmap, 9
 _SYSCALL3 linuxMunmap, 11
+_SYSCALL6 linuxBrk, 12
 
 _SYSCALL3 linuxNanosleep, 35
 
