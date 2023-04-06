@@ -1,6 +1,11 @@
+internal uint floor(uint a, uint b) {
+    return a - (a % b);
+}
 internal uint ceil(uint a, uint b) {
     return (a + b) - (a % b) - 1;
 }
+
+// TODO: divmod
 
 // bit twiddling: http://graphics.stanford.edu/~seander/bithacks.html
 #define _BIT_TWIDDLE_MASK1 0x5555555555555555
