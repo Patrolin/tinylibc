@@ -14,14 +14,6 @@ internal void osPrint(const u8* msg, uint count);
 
 // assert
 internal void osPanic(const char* msg);
-#define _osPageAllocAssert(ptr) \
-    assert((ptr != 0), "AllocError: ptr = 0\n"); \
-    assert((((u64)ptr % PAGE_SIZE) == 0), "AllocError: ptr is not page aligned\n");
-
-// exceptions
-internal void segfault() {
-    *((volatile u8*)0) = 0;
-}
 
 // alloc
 internal void* osPageAlloc(uint size); // alloc ceil(size/PAGE_SIZE) pages and clear them to zero

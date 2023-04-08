@@ -43,7 +43,6 @@ external void _start() {
     //crtInit();
     _linuxInit();
     _tallocInit();
-    _floatInit();
     // TODO:
     // pop rdi     /* argc */
     // mov rsi,rsp /* argv */

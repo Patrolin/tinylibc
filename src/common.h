@@ -1,18 +1,14 @@
-static void osPanic(const char *msg);
-#ifdef BUILD_RELEASE
-    #define assert(condition, msg)
-#else
-    #define assert(condition, msg) if (!(condition)) osPanic(msg);
-#endif
-
 #include "common/types/common.h"
 #include "common/types/int.h"
-#include "common/types/float.h"
+#include "common/types/fixed.h"
 #include "common/types/arch.h"
 #include "common/types/os.h"
-#include "common/types/bit_twiddling.h"
-#include "common/types/fixed.h"
+#include "common/types/string.h"
 
-#include "common/time.h"
-#include "common/alloc.h"
-#include "common/string.h"
+#include "common/functions/assert.h"
+#include "common/functions/alloc.h"
+#include "common/functions/time.h"
+
+#include "common/functions/int.h"
+#include "common/functions/fixed.h"
+#include "common/functions/string.h"

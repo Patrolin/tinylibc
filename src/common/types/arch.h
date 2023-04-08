@@ -35,19 +35,3 @@
 #else
     static_assert(false, "Unknown bits");
 #endif
-
-// _floatInit
-internal void print(const char* msg);
-template <typename T>
-internal void printline(T value);
-internal void _floatInit() {
-    // TODO: call this per thread
-    #if defined(ARCH_X64) || defined(ARCH_X86)
-        auto xmmFlags = _mm_getcsr();
-        _mm_setcsr(xmmFlags | _MM_FLUSH_ZERO | _MM_DENORMALS_ARE_ZERO);
-        xmmFlags = _mm_getcsr();
-        assert((xmmFlags&_MM_FLUSH_ZERO) && (xmmFlags&_MM_DENORMALS_ARE_ZERO), "InitError: Failed to set xmmFlags");
-    #else
-        static_assert(false, "Unsupported architecture");
-    #endif
-}

@@ -50,7 +50,6 @@ external int _start() {
     //crtInit();
     _winInit();
     _tallocInit();
-    _floatInit();
     // TODO: pass arguments
     #if BUILD_CONSOLE
         int return_code = main(0, 0);
