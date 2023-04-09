@@ -53,7 +53,8 @@ internal String sprint(fixed32 number) {
 }
 
 // since C doesn't have fixed point constants, we have to parse them ourselves:
-#define _assertIsNumeric(character, curr) assert((character >= '0') && (character <= '9'), (char*)(sprint({ sprint("ParsingError: "), sprint((u64)*curr), sprint("; "), sprint((char*)curr) }).msg))
+#define _assertIsNumeric(character, curr) \
+    assert((character >= '0') && (character <= '9'), (char*)(sprint({ sprint("ParsingError: "), sprint((u64)*curr), sprint("; "), sprint((char*)curr) }).msg))
 fixed32 parseFixed32(String str) {
     u32 integer = 0;
     u8* curr = str.msg;
