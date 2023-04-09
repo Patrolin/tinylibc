@@ -1,48 +1,37 @@
 // print
-#define _sprintUnsigned(BITS) \
-    internal String sprint(u8* buffer, u##BITS number) { \
-        u8* curr = buffer + U##BITS##_MAX_BASE10_DIGITS; \
-        *curr = '\0'; \
-        do { \
-            *--curr = '0' + (number % 10); \
-            number /= 10; \
-        } while (number > 0); \
-        uint offset = (uint)(curr - buffer); \
-        uint count = U##BITS##_MAX_BASE10_DIGITS - offset; \
-        for (uint i = 0; i < count; i++) \
-            *(buffer + i) = *(curr + i); \
-        return String { buffer, count }; \
-    } \
-    internal String sprint(u##BITS number) { \
-        String str = sprint((u8*)talloc(U##BITS##_MAX_BASE10_DIGITS+1), number); \
-        return str; \
+internal String sprint(u8* buffer, u64 number) {
+    u8* curr = buffer + U64_MAX_BASE10_DIGITS;
+    *curr = '\0';
+    do {
+        *--curr = '0' + (number % 10);
+        number /= 10;
+    } while (number > 0);
+    uint offset = (uint)(curr - buffer);
+    uint count = U64_MAX_BASE10_DIGITS - offset;
+    for (uint i = 0; i < count; i++)
+        *(buffer + i) = *(curr + i);
+    return String { buffer, count };
+}
+internal String sprint(u64 number) {
+    String str = sprint((u8*)talloc(U64_MAX_BASE10_DIGITS + 1), number);
+    return str;
+}
+internal String sprint(u8* buffer, s64 number) {
+    String str;
+    if (number >= 0)
+        str = sprint(buffer, (u64)number);
+    else {
+        *buffer = '-';
+        str = sprint(buffer+1, (u64)-number);
+        str.msg--;
+        str.count++;
     }
-#define _sprintSigned(BITS) \
-    internal String sprint(u8* buffer, s##BITS number) { \
-        String str; \
-        if (number >= 0) \
-            str = sprint(buffer+1, (u##BITS)number); \
-        else { \
-            str = sprint(buffer+1, (u##BITS)-number); \
-            *(--str.msg) = '-'; \
-            str.count++; \
-        } \
-        return str; \
-    } \
-    internal String sprint(s##BITS number) { \
-        String str = sprint((u8*)talloc(S##BITS##_MAX_BASE10_DIGITS+1), number); \
-        return str; \
-    }
-
-_sprintUnsigned(8)
-_sprintUnsigned(16)
-_sprintUnsigned(32)
-_sprintUnsigned(64)
-
-_sprintSigned(8)
-_sprintSigned(16)
-_sprintSigned(32)
-_sprintSigned(64)
+    return str;
+}
+internal String sprint(s64 number) {
+    String str = sprint((u8*)talloc(S64_MAX_BASE10_DIGITS + 1), number);
+    return str;
+}
 
 internal uint floor(uint a, uint b) {
     return a - (a % b);

@@ -48,10 +48,10 @@ typedef u64 bool64;
 #define U32_MAX_BASE10_DIGITS 10
 #define U64_MAX_BASE10_DIGITS 20
 
-#define S8_MAX_BASE10_DIGITS 4
-#define S16_MAX_BASE10_DIGITS 6
-#define S32_MAX_BASE10_DIGITS 11
-#define S64_MAX_BASE10_DIGITS 20 // (19+1)
+#define S8_MAX_BASE10_DIGITS (1+3)
+#define S16_MAX_BASE10_DIGITS (1+5)
+#define S32_MAX_BASE10_DIGITS (1+10)
+#define S64_MAX_BASE10_DIGITS (1+19)
 
 // bytes
 #define arrayCount(Array) (sizeof(Array) / sizeof((Array)[0]))

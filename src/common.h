@@ -9,6 +9,6 @@
 #include "common/functions/alloc.h"
 #include "common/functions/time.h"
 
+#include "common/functions/string.h"
 #include "common/functions/int.h"
 #include "common/functions/fixed.h"
-#include "common/functions/string.h"

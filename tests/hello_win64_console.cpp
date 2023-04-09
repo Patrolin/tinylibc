@@ -6,6 +6,8 @@ int main(int argc, char* argv[]) {
     char BigArray[4096];
     BigArray[0] = 0;
     print("Hello world\n");
-    printline((u32)-123);
+    printline((u64)-123);
     print({sprint("Timer resolution: "), sprint(TIMER_RESOLUTION_MS), sprint(" ms\n")});
+    printline(fixed32{ 0x10001 });
+    printline(parseFixed32(sprint("1.0000152587890625")));
 }
