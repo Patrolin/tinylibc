@@ -60,7 +60,6 @@ fixed32 parseFixed32(String str) {
     u8* curr = str.msg;
     u8* end = str.msg + str.count;
     fixed32 fraction = {};
-    fixed32 fixed_inv_ten = fixed32{ 0x5000 };
     while ((curr < end)) {
         u8 character = *curr;
         if (character == '.') {
@@ -69,7 +68,7 @@ fixed32 parseFixed32(String str) {
                 character = *curr;
                 _assertIsNumeric(character, curr);
                 fraction.value += (character - '0');
-                fraction *= fixed_inv_ten;
+                fraction *= F32_INV_TEN;
                 curr++;
             }
             break;
@@ -80,6 +79,17 @@ fixed32 parseFixed32(String str) {
         curr++;
     }
     return fixed32{ (integer << 16) | fraction.value };
+}
+
+// round
+fixed32 floor(fixed32 x) {
+    return fixed32{ x.value & ~F32_FRACTION_MASK };
+}
+fixed32 ceil(fixed32 x) {
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) | (x.value & F32_FRACTION_MASK > 0) };
+}
+fixed32 round(fixed32 x) {
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) | (x.value & F32_FRACTION_MASK >= F32_HALF.value) };
 }
 
 // TODO: fixed versions:
@@ -100,17 +110,5 @@ f32 mod(f32 a, f32 b) {
 }
 f32 rem(f32 a, f32 b) {
     return mod(a, b) - (b < 0)*b;
-}
-s32 floor(f32 number) {
-    //return floorDiv(number, 1.0f).quotient;
-    return (s32)number;
-}
-f32 round(f32 number) {
-    auto floor_div = floorDiv(number, 1.0f);
-    return floor_div.quotient + (floor_div.remainder >= 0.5f);
-}
-f32 ceil(f32 number) {
-    auto floor_div = floorDiv(number, 1.0f);
-    return floor_div.quotient + (floor_div.remainder > 0.0f);
 }
 */

@@ -6,5 +6,7 @@ struct fixed32 {
 
 #define F32_MAX_BASE10_DIGITS (S16_MAX_BASE10_DIGITS + 1 + U16_MAX_BASE10_DIGITS)
 #define F32_FRACTION_MASK 0xffff
+const fixed32 F32_INV_TEN = fixed32{ 0x5000 };
+const fixed32 F32_HALF = fixed32{ 0x8000 };
 
 // TODO: fixed64?
