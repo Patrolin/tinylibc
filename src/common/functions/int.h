@@ -33,12 +33,15 @@ internal String sprint(s64 number) {
     return str;
 }
 
+// round
 internal uint floor(uint a, uint b) {
     return a - (a % b);
 }
-// TODO: round?
+internal uint round(uint a, uint b) {
+    return floor(a + (b>>1), b);
+}
 internal uint ceil(uint a, uint b) {
-    return (a + b) - (a % b) - 1;
+    return floor(a + b-1, b);
 }
 
 // TODO: divmod
