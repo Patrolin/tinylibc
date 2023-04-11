@@ -4,7 +4,7 @@ internal String sprint(u8* buffer, u64 number) {
     *curr = '\0';
     do {
         *--curr = '0' + (number % 10);
-        number /= 10;
+        number /= 10; // TODO: is compile smart enough to optimize this?
     } while (number > 0);
     uint offset = (uint)(curr - buffer);
     uint count = U64_MAX_BASE10_DIGITS - offset;
@@ -33,6 +33,8 @@ internal String sprint(s64 number) {
     return str;
 }
 
+// (compiler optimizes a/b, a%b to a single instruction)
+
 // round
 internal uint floor(uint a, uint b) {
     return a - (a % b);
@@ -43,8 +45,6 @@ internal uint round(uint a, uint b) {
 internal uint ceil(uint a, uint b) {
     return floor(a + b-1, b);
 }
-
-// TODO: divmod
 
 // bit twiddling: http://graphics.stanford.edu/~seander/bithacks.html
 #define _BIT_TWIDDLE_MASK1 0x5555555555555555
@@ -94,7 +94,7 @@ internal u64 reverseBits(u64 value) {
 internal u64 countSetBits(u64 value) {
     return __builtin_popcountll(value);
 }
-// if (value != 0) { return findFirstSet(value) + 1 } else return 0
+// (value != 0) ? findFirstSet(value) + 1 : 0
 internal u64 countTrailingZeros(u64 value) {
     return __builtin_ctzll(value);
 }
@@ -102,13 +102,13 @@ internal u64 countTrailingZeros(u64 value) {
 internal u64 findFirstSet(u64 value) {
     return __builtin_ffsll(value);
 }
-// if (value != 0) { return 63 - findLastSet(value) } else return 63
+// (value != 0) ? 63 - findLastSet(value) : 63
 internal u64 countLeadingZeros(u64 value) {
     return __builtin_clzll(value);
 }
 // find most significant set bit
 internal u64 findLastSet(u64 value) {
-    return (value == 0) ? 0 : 63 - countLeadingZeros(value);
+    return (value != 0) ? 63 - countLeadingZeros(value) : 0;
 }
 internal u64 log2(u64 value) {
     return findLastSet(value);
