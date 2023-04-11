@@ -25,10 +25,14 @@ internal void operator*=(fixed32& left, const fixed32& right) {
     left.value = result;
 }
 internal fixed32 operator/(const fixed32& left, const fixed32& right) {
-    return left * fixed32{ reverseBits(right.value) << 1 };
+    u64 a = (u64)left.value << 16;
+    u64 b = (u64)right.value;
+    return fixed32{ (u32)(a / b) };
 }
 internal void operator/=(fixed32& left, const fixed32& right) {
-    left.value = (left / fixed32{ reverseBits(right.value) << 1 }).value;
+    u64 a = (u64)left.value << 16;
+    u64 b = (u64)right.value;
+    left.value = (u32)(a / b);
 }
 
 // print
@@ -90,6 +94,38 @@ fixed32 ceil(fixed32 x) {
 }
 fixed32 round(fixed32 x) {
     return fixed32{ (x.value & ~F32_FRACTION_MASK) | ((x.value & F32_FRACTION_MASK) >= F32_HALF.value) };
+}
+
+internal fixed32 exp(fixed32 x) {
+    // TODO
+    return x;
+}
+internal fixed32 atanh(fixed32 x) {
+    fixed32 y = x;
+    fixed32 xx = x*x;
+    // y = sum_{k}^{inf} y^{2k+1} / {2k+1}
+    x *= xx;
+    y += x / F32_THREE;
+    x *= xx;
+    y += x / F32_FIVE;
+    x *= xx;
+    y += x / F32_SEVEN;
+    return y;
+}
+internal fixed32 log2(fixed32 x) {
+    u32 integer_part = findLastSet(x.value & ~F32_FRACTION_MASK);
+    integer_part = (integer_part > 16) ? integer_part - 16 : 0;
+    fixed32 fraction = fixed32{ F32_ONE.value + (x.value >> integer_part) };
+    //fraction = F32_FOUR * atanh((fraction - F32_ONE) / (fraction + F32_ONE));
+    printline({sprint("aaa.0: "), sprint(fraction)});
+    printline({sprint("aaa.1: "), sprint((fraction - F32_ONE))});
+    printline({sprint("aaa.2: "), sprint((fraction + F32_ONE))});
+    printline({sprint("aaa: "), sprint((fraction - F32_ONE) / (fraction + F32_ONE))});
+    printline({sprint("bbb: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)))});
+    fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE));
+    //return fixed32{ (integer_part << 16) };
+    return fraction;
+    return fixed32{ (integer_part << 16) | fraction.value };
 }
 
 // TODO: fixed versions:

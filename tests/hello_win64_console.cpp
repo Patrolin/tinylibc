@@ -13,6 +13,12 @@ int main(int argc, char* argv[]) {
     printline((u64)findLastSet(0x8000000080000000));
     printline((u64)log2((u64)7));
     print({sprint("Timer resolution: "), sprint(TIMER_RESOLUTION_MS), sprint(" ms\n")});
-    printline(fixed32{ 0x10001 });
-    printline(parseFixed32(sprint("1.0000152587890625")));
+    printline(F32_ONE);
+    printline(F32_INV_TEN);
+    printline(F32_ONE * F32_INV_TEN);
+    printline(F32_TEN);
+    printline(F32_ONE / F32_TEN);
+    printline(atanh(F32_INV_TEN));
+    printline(atanh(F32_HALF));
+    printline(log2(F32_HALF));
 }
