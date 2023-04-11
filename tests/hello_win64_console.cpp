@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
     printline(parseFixed32(sprint("1.0000152587890625")));
     printline((u64)countTrailingZeros(0));
     printline((u64)findFirstSet(0x8000000080000000));
-    printline((u64)countLeadingZeros(0x8000000080000000));
-    printline((u64)findLastSet(0));
-    printline((u64)log2((u64)0));
+    printline((u64)countLeadingZeros(0));
+    printline((u64)findLastSet(0x8000000080000000));
+    printline((u64)log2((u64)7));
 }

@@ -88,10 +88,25 @@ internal u64 reverseBits(u64 value) {
 #define reverseBytes32(value) __builtin_bswap32(value)
 #define reverseBytes64(value) __builtin_bswap64(value)
 
-#define countSetBits(value) __builtin_popcountll(value) // count set bits
-#define countTrailingZeros(value) __builtin_ctzll(value) // if (value != 0) { return findFirstSet(value) + 1 } else return 64
-#define findFirstSet(value) __builtin_ffsll(value) // find least significant set bit
-#define countLeadingZeros(value) __builtin_clzll(value) // if (value != 0) { return 63 - findLastSet(value) } else return 64
-#define findLastSet(value) ((value == 0) ? 0 : 63 - countLeadingZeros(value)) // find most significant set bit
-
-#define log2(value) findLastSet(value)
+internal u64 countSetBits(u64 value) {
+    return __builtin_popcountll(value);
+}
+// if (value != 0) { return findFirstSet(value) + 1 } else return 0
+internal u64 countTrailingZeros(u64 value) {
+    return __builtin_ctzll(value);
+}
+// find least significant set bit
+internal u64 findFirstSet(u64 value) {
+    return __builtin_ffsll(value);
+}
+// if (value != 0) { return 63 - findLastSet(value) } else return 63
+internal u64 countLeadingZeros(u64 value) {
+    return __builtin_clzll(value);
+}
+// find most significant set bit
+internal u64 findLastSet(u64 value) {
+    return (value == 0) ? 0 : 63 - countLeadingZeros(value);
+}
+internal u64 log2(u64 value) {
+    return findLastSet(value);
+}
