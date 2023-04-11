@@ -86,10 +86,10 @@ fixed32 floor(fixed32 x) {
     return fixed32{ x.value & ~F32_FRACTION_MASK };
 }
 fixed32 ceil(fixed32 x) {
-    return fixed32{ (x.value & ~F32_FRACTION_MASK) | (x.value & F32_FRACTION_MASK > 0) };
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) | ((x.value & F32_FRACTION_MASK) > 0) };
 }
 fixed32 round(fixed32 x) {
-    return fixed32{ (x.value & ~F32_FRACTION_MASK) | (x.value & F32_FRACTION_MASK >= F32_HALF.value) };
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) | ((x.value & F32_FRACTION_MASK) >= F32_HALF.value) };
 }
 
 // TODO: fixed versions:

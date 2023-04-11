@@ -84,82 +84,14 @@ internal u64 reverseBits(u64 value) {
     return value;
 }
 
-#define _LOG2(mask, shift_count) \
-    shift = (value > mask) << shift_count; result |= shift; value >>= shift
+#define reverseBytes16(value) __builtin_bswap16(value)
+#define reverseBytes32(value) __builtin_bswap32(value)
+#define reverseBytes64(value) __builtin_bswap64(value)
 
-internal u8 log2(u8 value) {
-    u8 shift, result = 0;
-    _LOG2(0xF, 2);
-    _LOG2(0x3, 1);
-    result |= (value >> 1);
-    return result;
-}
-internal u16 log2(u16 value) {
-    u16 shift, result = 0;
-    _LOG2(0xFF, 3);
-    _LOG2(0xF, 2);
-    _LOG2(0x3, 1);
-    result |= (value >> 1);
-    return result;
-}
-internal u32 log2(u32 value) {
-    u32 shift, result = 0;
-    _LOG2(0xFFFF, 4);
-    _LOG2(0xFF, 3);
-    _LOG2(0xF, 2);
-    _LOG2(0x3, 1);
-    result |= (value >> 1);
-    return result;
-}
-internal u64 log2(u64 value) {
-    u64 shift, result = 0;
-    _LOG2(0xFFFFFFFF, 5);
-    _LOG2(0xFFFF, 4);
-    _LOG2(0xFF, 3);
-    _LOG2(0xF, 2);
-    _LOG2(0x3, 1);
-    result |= (value >> 1);
-    return result;
-}
+#define countSetBits(value) __builtin_popcountll(value) // count set bits
+#define countTrailingZeros(value) __builtin_ctzll(value) // if (value != 0) { return findFirstSet(value) + 1 } else return 64
+#define findFirstSet(value) __builtin_ffsll(value) // find least significant set bit
+#define countLeadingZeros(value) __builtin_clzll(value) // if (value != 0) { return 63 - findLastSet(value) } else return 64
+#define findLastSet(value) ((value == 0) ? 0 : 63 - countLeadingZeros(value)) // find most significant set bit
 
-#define _trailingZeros(mask, shift_count) \
-    result -= ((value & mask) != 0) * shift_count
-
-internal u8 trailingZeros(u8 value) {
-    value &= (u8)(-value);
-    u8 result = 8 - (value != 0);
-    _trailingZeros(_BIT_TWIDDLE_MASK3, 4);
-    _trailingZeros(_BIT_TWIDDLE_MASK2, 2);
-    _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
-    return result;
-}
-internal u16 trailingZeros(u16 value) {
-    value &= (u16)(-value);
-    u16 result = 16 - (value != 0);
-    _trailingZeros(_BIT_TWIDDLE_MASK4, 8);
-    _trailingZeros(_BIT_TWIDDLE_MASK3, 4);
-    _trailingZeros(_BIT_TWIDDLE_MASK2, 2);
-    _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
-    return result;
-}
-internal u32 trailingZeros(u32 value) {
-    value &= (u32)(-value);
-    u32 result = 32 - (value != 0);
-    _trailingZeros(_BIT_TWIDDLE_MASK5, 16);
-    _trailingZeros(_BIT_TWIDDLE_MASK4, 8);
-    _trailingZeros(_BIT_TWIDDLE_MASK3, 4);
-    _trailingZeros(_BIT_TWIDDLE_MASK2, 2);
-    _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
-    return result;
-}
-internal u64 trailingZeros(u64 value) {
-    value &= (u64)(-value);
-    u64 result = 64 - (value != 0);
-    _trailingZeros(_BIT_TWIDDLE_MASK6, 32);
-    _trailingZeros(_BIT_TWIDDLE_MASK5, 16);
-    _trailingZeros(_BIT_TWIDDLE_MASK4, 8);
-    _trailingZeros(_BIT_TWIDDLE_MASK3, 4);
-    _trailingZeros(_BIT_TWIDDLE_MASK2, 2);
-    _trailingZeros(_BIT_TWIDDLE_MASK1, 1);
-    return result;
-}
+#define log2(value) findLastSet(value)
