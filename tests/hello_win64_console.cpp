@@ -21,4 +21,6 @@ int main(int argc, char* argv[]) {
     printline(atanh(F32_INV_TEN));
     printline(atanh(F32_HALF));
     printline(log2(F32_HALF));
+    printline(log2(F32_TWO));
+    printline(log2(F32_FIVE));
 }

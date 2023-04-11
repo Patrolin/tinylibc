@@ -1,6 +1,7 @@
 // floats break down around the same time as fixed point (1e11f: 99999997952.000000)
 // while fixed point always works across space and time
 struct fixed32 {
+    // TODO: s32
     u32 value;
 };
 
@@ -19,5 +20,7 @@ const fixed32 F32_TEN = fixed32{ 0xa0000 };
 
 const fixed32 F32_INV_TEN = fixed32{ 0x199a };
 const fixed32 F32_HALF = fixed32{ 0x8000 };
+
+const fixed32 F32_LOG2 = fixed32{ 0xb16c };
 
 // TODO: fixed64?

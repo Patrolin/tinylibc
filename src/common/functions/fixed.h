@@ -116,16 +116,16 @@ internal fixed32 log2(fixed32 x) {
     u32 integer_part = findLastSet(x.value & ~F32_FRACTION_MASK);
     integer_part = (integer_part > 16) ? integer_part - 16 : 0;
     fixed32 fraction = fixed32{ F32_ONE.value + (x.value >> integer_part) };
-    //fraction = F32_FOUR * atanh((fraction - F32_ONE) / (fraction + F32_ONE));
     printline({sprint("aaa.0: "), sprint(fraction)});
     printline({sprint("aaa.1: "), sprint((fraction - F32_ONE))});
     printline({sprint("aaa.2: "), sprint((fraction + F32_ONE))});
     printline({sprint("aaa: "), sprint((fraction - F32_ONE) / (fraction + F32_ONE))});
-    printline({sprint("bbb: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)))});
-    fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE));
+    printline({sprint("bbb: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO)});
+    printline({sprint("ccc: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LOG2)});
+    fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LOG2;
     //return fixed32{ (integer_part << 16) };
-    return fraction;
-    return fixed32{ (integer_part << 16) | fraction.value };
+    //return fraction;
+    return fixed32{ (integer_part << 16) + fraction.value };
 }
 
 // TODO: fixed versions:
