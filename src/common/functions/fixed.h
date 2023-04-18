@@ -56,7 +56,7 @@ fixed32 parseFixed32(String str, u32 base = 10) {
         integer = integer*base + number;
         curr++;
     }
-    return fixed32{ (integer << 16) | fraction };
+    return fixed32{ (s32)((integer << 16) | fraction) }; // TODO: s32
 }
 
 // sign
@@ -79,13 +79,14 @@ fixed32 round(fixed32 x) {
 }
 
 internal fixed32 exp(fixed32 x) {
+    // TODO
     fixed32 acc = F32_ONE;
     fixed32 acc_x = F32_ONE;
     fixed32 acc_n = F32_ONE;
-    for (u32 i = 1; i < 8; i++) {
+    for (s32 i = 1; i < 8; i++) {
         acc_x *= x;
         acc_n *= fixed32{i << 16};
-        printline({ sprint("acc_x = "), sprint(acc_x), sprint(", acc_n = "), sprint(acc_n) });
+        //printline({ sprint("acc_x = "), sprint(acc_x), sprint(", acc_n = "), sprint(acc_n) });
         acc += x / acc_n;
     }
     return acc;
@@ -109,13 +110,13 @@ internal fixed32 log2(fixed32 x) {
     fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LN_2;
     //return fixed32{ (integer_part << 16) };
     //return fraction;
-    return fixed32{ (integer_part << 16) + fraction.value };
+    return fixed32{ (s32)((integer_part << 16) + fraction.value) }; // TODO: s32
 }
 internal fixed32 ln(fixed32 x) {
     return log2(x) * F32_LN_2;
 }
 internal fixed32 pow(fixed32 x, fixed32 y) {
-    return x; // TODO
+    return exp(y * ln(x));
 }
 internal fixed32 sqrt(fixed32 x) {
     return pow(x, F32_HALF);

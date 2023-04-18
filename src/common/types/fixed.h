@@ -1,9 +1,11 @@
 // floats break down around the same time as fixed point (1e11f: 99999997952.000000)
 // while fixed point always works across space and time
 struct fixed32 {
-    // TODO: s32
-    u32 value;
+    s32 value;
 };
+#define F32_SIGN_MASK 0x80000000
+#define F32_FRACTION_MASK 0xffff
+#define F32_MAX_BASE10_DIGITS (S16_MAX_BASE10_DIGITS + 1 + U16_MAX_BASE10_DIGITS)
 
 // TODO: SIMD
 // operators
@@ -23,30 +25,26 @@ internal void operator-=(fixed32& left, fixed32 right) {
     left.value = left.value - right.value;
 }
 internal fixed32 operator*(fixed32 left, fixed32 right) {
-    u64 a = (u64)(left.value);
-    u64 b = (u64)(right.value);
-    u32 result = (u32)((a * b) >> 16);
-    return fixed32{ result };
+    s64 a = (s64)(left.value);
+    s64 b = (s64)(right.value);
+    return fixed32{ (s32)((a*b) >> 16) };
 }
 internal void operator*=(fixed32& left, fixed32 right) {
-    u64 a = (u64)(left.value);
-    u64 b = (u64)(right.value);
-    u32 result = (u32)((a * b) >> 16);
-    left.value = result;
+    s64 a = (s64)(left.value);
+    s64 b = (s64)(right.value);
+    left.value = (s32)((a*b) >> 16);
 }
 internal fixed32 operator/(fixed32 left, fixed32 right) {
-    u64 a = (u64)left.value << 16;
-    u64 b = (u64)right.value;
-    return fixed32{ (u32)(a / b) };
+    s64 a = (s64)left.value << 16;
+    s64 b = (s64)right.value;
+    return fixed32{ (s32)(a / b) };
 }
 internal void operator/=(fixed32& left, fixed32 right) {
-    u64 a = (u64)left.value << 16;
-    u64 b = (u64)right.value;
-    left.value = (u32)(a / b);
+    s64 a = (s64)left.value << 16;
+    s64 b = (s64)right.value;
+    left.value = (s32)(a / b);
 }
 
-#define F32_MAX_BASE10_DIGITS (S16_MAX_BASE10_DIGITS + 1 + U16_MAX_BASE10_DIGITS)
-#define F32_FRACTION_MASK 0xffff
 const fixed32 F32_ONE = fixed32{ 0x10000 };
 const fixed32 F32_TWO = fixed32{ 0x20000 };
 const fixed32 F32_THREE = fixed32{ 0x30000 };
