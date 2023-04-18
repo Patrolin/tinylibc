@@ -22,6 +22,7 @@ internal fixed32 random() {
     return fixed32{ (s32)(randInt() & F32_FRACTION_MASK) };
 }
 internal fixed32 randomHalfGaussian() {
+    // TODO: derive inverse cdf
     return sqrt(-F32_TWO * ln(random())); // * F32_SQRT_PI ?
 }
 internal fixed32 randomGaussian() {
