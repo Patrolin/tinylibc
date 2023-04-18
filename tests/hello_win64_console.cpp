@@ -15,10 +15,8 @@ int main(int argc, char* argv[]) {
     print({sprint("Timer resolution: "), sprint(TIMER_RESOLUTION_MS), sprint(" ms\n")});
     printline(F32_ONE);
     printline(F32_TEN);
-    printline(F32_INV_TEN);
     printline(F32_ONE / F32_TEN);
-    printline(F32_TEN * F32_INV_TEN);
-    printline(atanh(F32_INV_TEN));
+    printline(atanh(F32_ONE / F32_TEN));
     printline(atanh(F32_HALF));
     printline(log2(F32_HALF));
     printline(log2(F32_TWO));
