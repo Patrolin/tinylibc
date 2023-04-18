@@ -28,34 +28,25 @@
 #endif
 
 int main(int argc, char* argv[]) {
+    char BigArray[4096];
+    BigArray[0] = 0;
     print("Hello world\n");
-    /*printline(123);
-    printline(-123);
-    debugPrint(f32u32(1.0f).u32);
-    debugPrint(f32u32(round(0.5)).u32);
-    debugPrint(f32u32(0.5f).u32);
-    debugPrint(f32u32(mod(1.5, 1.0)).u32);*/
-    printline(f32u32(1e22f).u32);
-    printline(f32u32(1e21f).u32);
-    printline(f32u32(1e20f).u32);
-    printline(f32u32(1e19f).u32);
-    printline(f32u32(100000.0f).u32);
-    printline(f32u32(100000.0f).u32);
-    printline(f32u32(10000.0f).u32);
-    printline(f32u32(1000.0f).u32);
-    printline(f32u32(100.0f).u32);
-    printline(f32u32(10.0f).u32);
-    printline(5.0f);
-    printline(f32u32(log2(5.0f)).u32);
-    printline(log2(5.0f));
-    printline(f32u32(log10(5.0f)).u32);
-    printline(log10(5.0f));
-    //debugPrint(f32u32(1.0f).u32);
-    //printline(0.5f);
-    //printline(0.1f);
-    //printline(10.5f);
-    //printline(1.0f);
-    //printline(0.09f);
-    //printline(0.1f);
+    printline((u64)-123);
+    printline((u64)countTrailingZeros(0));
+    printline((u64)findFirstSet(0x8000000080000000));
+    printline((u64)countLeadingZeros(0));
+    printline((u64)findLastSet(0x8000000080000000));
+    printline((u64)log2((u64)7));
+    print({sprint("Timer resolution: "), sprint(TIMER_RESOLUTION_MS), sprint(" ms\n")});
+    printline(F32_ONE);
+    printline(F32_TEN);
+    printline(F32_INV_TEN);
+    printline(F32_ONE / F32_TEN);
+    printline(F32_TEN * F32_INV_TEN);
+    printline(atanh(F32_INV_TEN));
+    printline(atanh(F32_HALF));
+    printline(log2(F32_HALF));
+    printline(log2(F32_TWO));
+    printline(log2(F32_TEN));
     return 0;
 }

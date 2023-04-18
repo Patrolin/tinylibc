@@ -34,6 +34,15 @@ internal void operator/=(fixed32& left, const fixed32& right) {
     u64 b = (u64)right.value;
     left.value = (u32)(a / b);
 }
+// high precision fraction
+internal u32 _inv_fraction(const u32& x) {
+    return (1 << 31) / x;
+}
+internal u32 _mul_fraction(const u32& fraction, const u32& integer) {
+    u64 a = (u64)fraction;
+    u64 b = (u64)integer;
+    return (u32)((a*b) >> 15);
+}
 
 // print
 internal String sprint(u8* buffer, fixed32 number) {
@@ -59,11 +68,12 @@ internal String sprint(fixed32 number) {
 // since C doesn't have fixed point constants, we have to parse them ourselves:
 #define _assertIsNumeric(character, curr) \
     assert((character >= '0') && (character <= '9'), (char*)(sprint({ sprint("ParsingError: "), sprint((u64)*curr), sprint("; "), sprint((char*)curr) }).msg))
-fixed32 parseFixed32(String str) {
+fixed32 parseFixed32(String str, u32 base = 10) {
     u32 integer = 0;
     u8* curr = str.msg;
     u8* end = str.msg + str.count;
-    fixed32 fraction = {};
+    u32 fraction = 0;
+    u32 fraction_k = base;
     while ((curr < end)) {
         u8 character = *curr;
         if (character == '.') {
@@ -71,18 +81,18 @@ fixed32 parseFixed32(String str) {
             while (curr < end) {
                 character = *curr;
                 _assertIsNumeric(character, curr);
-                fraction.value += (character - '0');
-                fraction *= F32_INV_TEN;
+                fraction += _mul_fraction(_inv_fraction(fraction_k), (u32)(character - '0'));
+                fraction_k *= base;
                 curr++;
             }
             break;
         }
         u8 number = (character - '0');
         _assertIsNumeric(character, curr);
-        integer = integer*10 + number;
+        integer = integer*base + number;
         curr++;
     }
-    return fixed32{ (integer << 16) | fraction.value };
+    return fixed32{ (integer << 16) | fraction };
 }
 
 // round
@@ -97,8 +107,16 @@ fixed32 round(fixed32 x) {
 }
 
 internal fixed32 exp(fixed32 x) {
-    // TODO
-    return x;
+    fixed32 acc = F32_ONE;
+    fixed32 acc_x = F32_ONE;
+    fixed32 acc_n = F32_ONE;
+    for (u32 i = 1; i < 18; i++) {
+        acc_x *= x;
+        acc_n *= fixed32{i << 16};
+        printline({ sprint("acc_x = "), sprint(acc_x), sprint(", acc_n = "), sprint(acc_n) });
+        acc += x / acc_n;
+    }
+    return acc;
 }
 internal fixed32 atanh(fixed32 x) {
     fixed32 y = x;
@@ -115,13 +133,7 @@ internal fixed32 atanh(fixed32 x) {
 internal fixed32 log2(fixed32 x) {
     u32 integer_part = findLastSet(x.value & ~F32_FRACTION_MASK);
     integer_part = (integer_part > 16) ? integer_part - 16 : 0;
-    fixed32 fraction = fixed32{ F32_ONE.value + (x.value >> integer_part) };
-    printline({sprint("aaa.0: "), sprint(fraction)});
-    printline({sprint("aaa.1: "), sprint((fraction - F32_ONE))});
-    printline({sprint("aaa.2: "), sprint((fraction + F32_ONE))});
-    printline({sprint("aaa: "), sprint((fraction - F32_ONE) / (fraction + F32_ONE))});
-    printline({sprint("bbb: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO)});
-    printline({sprint("ccc: "), sprint(atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LOG2)});
+    fixed32 fraction = fixed32{ (x.value >> integer_part) };
     fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LOG2;
     //return fixed32{ (integer_part << 16) };
     //return fraction;

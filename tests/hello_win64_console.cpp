@@ -14,13 +14,17 @@ int main(int argc, char* argv[]) {
     printline((u64)log2((u64)7));
     print({sprint("Timer resolution: "), sprint(TIMER_RESOLUTION_MS), sprint(" ms\n")});
     printline(F32_ONE);
-    printline(F32_INV_TEN);
-    printline(F32_ONE * F32_INV_TEN);
     printline(F32_TEN);
+    printline(F32_INV_TEN);
     printline(F32_ONE / F32_TEN);
+    printline(F32_TEN * F32_INV_TEN);
     printline(atanh(F32_INV_TEN));
     printline(atanh(F32_HALF));
     printline(log2(F32_HALF));
     printline(log2(F32_TWO));
-    printline(log2(F32_FIVE));
+    printline(log2(F32_TEN));
+    printline(exp(F32_ONE));
+    printline("2.718281828459045");
+    printline(parseFixed32(sprint("2.718281828459045")));
+    printline(F32_E);
 }

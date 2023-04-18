@@ -51,7 +51,7 @@ external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int*
 
 // TODO: getcpu()?
 
-#define TIMER_RESOLUTION_MS 1 // TODO: is this correct?
+#define TIMER_RESOLUTION_MS 1ULL // TODO: is this correct?
 
 void _linuxInit() {
     linuxSbrk(megaBytes(1));

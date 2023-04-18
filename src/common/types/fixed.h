@@ -22,5 +22,6 @@ const fixed32 F32_INV_TEN = fixed32{ 0x199a };
 const fixed32 F32_HALF = fixed32{ 0x8000 };
 
 const fixed32 F32_LOG2 = fixed32{ 0xb16c };
+const fixed32 F32_E = fixed32{ 178145 };
 
 // TODO: fixed64?

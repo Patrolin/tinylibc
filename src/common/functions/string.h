@@ -42,6 +42,7 @@ template <typename T>
 internal void print(T value) {
     print(sprint(value));
 }
+internal String sprint(u64 number); // WSL is cursed
 template <typename T>
 internal void printline(T value) {
     print({sprint(value), sprint("\n")});
