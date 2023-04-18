@@ -25,4 +25,12 @@ int main(int argc, char* argv[]) {
     printline("2.718281828459045");
     printline(parseFixed32(sprint("2.718281828459045")));
     printline(F32_E);
+    printline(parseFixed32(sprint("2.5066282746310002")));
+    fixed32 arr[5] = {};
+    for (uint i = 0; i < 5; i++) {
+        arr[i] = random();
+    }
+    printline(arr[0]);
+    printline(mean(arr));
+    printline(stddev(arr, mean(arr)));
 }
