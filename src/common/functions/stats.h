@@ -22,7 +22,7 @@ internal fixed32 random() {
     return fixed32{ (s32)(randInt() & F32_FRACTION_MASK) };
 }
 internal fixed32 randomHalfGaussian() {
-    // TODO: derive inverse cdf
+    // TODO: this is wrong; use first coordinate of https://en.wikipedia.org/wiki/Box–Muller_transform instead
     return sqrt(-F32_TWO * ln(random())); // * F32_SQRT_PI ?
 }
 internal fixed32 randomGaussian() {
