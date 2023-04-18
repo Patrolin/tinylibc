@@ -100,17 +100,17 @@ fixed32 floor(fixed32 x) {
     return fixed32{ x.value & ~F32_FRACTION_MASK };
 }
 fixed32 ceil(fixed32 x) {
-    return fixed32{ (x.value & ~F32_FRACTION_MASK) | ((x.value & F32_FRACTION_MASK) > 0) };
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) + (((x.value & F32_FRACTION_MASK) > 0) << 16) };
 }
 fixed32 round(fixed32 x) {
-    return fixed32{ (x.value & ~F32_FRACTION_MASK) | ((x.value & F32_FRACTION_MASK) >= F32_HALF.value) };
+    return fixed32{ (x.value & ~F32_FRACTION_MASK) + (((x.value & F32_FRACTION_MASK) >= F32_HALF.value) << 16) };
 }
 
 internal fixed32 exp(fixed32 x) {
     fixed32 acc = F32_ONE;
     fixed32 acc_x = F32_ONE;
     fixed32 acc_n = F32_ONE;
-    for (u32 i = 1; i < 18; i++) {
+    for (u32 i = 1; i < 8; i++) {
         acc_x *= x;
         acc_n *= fixed32{i << 16};
         printline({ sprint("acc_x = "), sprint(acc_x), sprint(", acc_n = "), sprint(acc_n) });
