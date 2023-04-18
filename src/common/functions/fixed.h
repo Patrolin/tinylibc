@@ -120,6 +120,9 @@ internal fixed32 pow(fixed32 x, fixed32 y) {
 internal fixed32 sqrt(fixed32 x) {
     return pow(x, F32_HALF);
 }
+internal fixed32 squared(fixed32 x) {
+    return x*x;
+}
 
 // TODO: fixed versions:
 /*
