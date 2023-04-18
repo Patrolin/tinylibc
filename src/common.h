@@ -12,3 +12,5 @@
 #include "common/functions/string.h"
 #include "common/functions/int.h"
 #include "common/functions/fixed.h"
+
+#include "common/functions/random.h"

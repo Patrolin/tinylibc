@@ -1,44 +1,8 @@
-// operators
-// TODO: SIMD
-internal fixed32 operator+(const fixed32& left, const fixed32& right) {
-    return fixed32{ left.value + right.value };
-}
-internal void operator+=(fixed32& left, const fixed32& right) {
-    left.value = left.value + right.value;
-}
-internal fixed32 operator-(const fixed32& left, const fixed32& right) {
-    return fixed32{ left.value - right.value };
-}
-internal void operator-=(fixed32& left, const fixed32& right) {
-    left.value = left.value - right.value;
-}
-internal fixed32 operator*(const fixed32& left, const fixed32& right) {
-    u64 a = (u64)(left.value);
-    u64 b = (u64)(right.value);
-    u32 result = (u32)((a * b) >> 16);
-    return fixed32{ result };
-}
-internal void operator*=(fixed32& left, const fixed32& right) {
-    u64 a = (u64)(left.value);
-    u64 b = (u64)(right.value);
-    u32 result = (u32)((a * b) >> 16);
-    left.value = result;
-}
-internal fixed32 operator/(const fixed32& left, const fixed32& right) {
-    u64 a = (u64)left.value << 16;
-    u64 b = (u64)right.value;
-    return fixed32{ (u32)(a / b) };
-}
-internal void operator/=(fixed32& left, const fixed32& right) {
-    u64 a = (u64)left.value << 16;
-    u64 b = (u64)right.value;
-    left.value = (u32)(a / b);
-}
 // high precision fraction
-internal u32 _inv_fraction(const u32& x) {
+internal u32 _inv_fraction(u32 x) {
     return (1 << 31) / x;
 }
-internal u32 _mul_fraction(const u32& fraction, const u32& integer) {
+internal u32 _mul_fraction(u32 fraction, u32 integer) {
     u64 a = (u64)fraction;
     u64 b = (u64)integer;
     return (u32)((a*b) >> 15);
@@ -95,6 +59,14 @@ fixed32 parseFixed32(String str, u32 base = 10) {
     return fixed32{ (integer << 16) | fraction };
 }
 
+// sign
+fixed32 sign(fixed32 x) {
+    return fixed32{ 1 << 16 }; // TODO
+}
+fixed32 abs(fixed32 x) {
+    return x * sign(x);
+}
+
 // round
 fixed32 floor(fixed32 x) {
     return fixed32{ x.value & ~F32_FRACTION_MASK };
@@ -134,10 +106,19 @@ internal fixed32 log2(fixed32 x) {
     u32 integer_part = findLastSet(x.value & ~F32_FRACTION_MASK);
     integer_part = (integer_part > 16) ? integer_part - 16 : 0;
     fixed32 fraction = fixed32{ (x.value >> integer_part) };
-    fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LOG2;
+    fraction = atanh((fraction - F32_ONE) / (fraction + F32_ONE)) * F32_TWO / F32_LN_2;
     //return fixed32{ (integer_part << 16) };
     //return fraction;
     return fixed32{ (integer_part << 16) + fraction.value };
+}
+internal fixed32 ln(fixed32 x) {
+    return log2(x) * F32_LN_2;
+}
+internal fixed32 pow(fixed32 x, fixed32 y) {
+    return x; // TODO
+}
+internal fixed32 sqrt(fixed32 x) {
+    return pow(x, F32_HALF);
 }
 
 // TODO: fixed versions:

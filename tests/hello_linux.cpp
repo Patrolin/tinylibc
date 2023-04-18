@@ -50,5 +50,6 @@ int main(int argc, char* argv[]) {
     printline("2.718281828459045");
     printline(parseFixed32(sprint("2.718281828459045")));
     printline(F32_E);
+    printline(parseFixed32(sprint("2.5066282746310002")));
     return 0;
 }
