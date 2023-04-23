@@ -30,9 +30,21 @@ external int linuxBrk(void *addr);
 external uint __bss_start;
 void linuxSbrk(uint nbytes) {
     char* stack_end = (char*)(uint)linuxBrk(0);
-    stack_end += nbytes;
-    char* new_stack_end = (char*)(uint)linuxBrk((void*)stack_end);
-    assert(new_stack_end == stack_end, "Failed to brk");
+    char* desired_stack_end = stack_end + nbytes;
+    char* new_stack_end = (char*)(uint)linuxBrk((void*)desired_stack_end);
+    if (new_stack_end != desired_stack_end) {
+        u8 buffer[30];
+        print("           nbytes: ");
+        print(sprint((u8*)buffer, (uint)nbytes));
+        print("\n        stack_end: ");
+        print(sprint((u8*)buffer, (uint)stack_end));
+        print("\ndesired_stack_end: ");
+        print(sprint((u8*)buffer, (uint)desired_stack_end));
+        print("\n    new_stack_end: ");
+        print(sprint((u8*)buffer, (uint)new_stack_end));
+        print("\n");
+    }
+    assert(new_stack_end == desired_stack_end, "Failed to brk\n");
 }
 #define PROT_READ 0x1
 #define PROT_WRITE 0x2
@@ -54,5 +66,5 @@ external long linuxClone(unsigned long flags, void* stack, int* parent_tid, int*
 #define TIMER_RESOLUTION_MS 1ULL // TODO: is this correct?
 
 void _linuxInit() {
-    linuxSbrk(megaBytes(1));
+    linuxSbrk(PAGE_SIZE);
 }

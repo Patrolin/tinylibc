@@ -4,6 +4,7 @@
 // lld links and is small (4 KB) but program throws a Segmentation fault
 // gold works and is small (4 KB)
 // clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=gold -g && out/hello_linux
+// clang tests/hello_linux.cpp src/os/linux_x64.o -o out/hello_linux -nostdlib -fuse-ld=ld -g -fno-stack-protector -z stack-size=0x100000 && out/hello_linux
 #include "../src/tinylibc_linux.h"
 
 /*extern int pthread_create (
